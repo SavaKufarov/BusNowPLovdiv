@@ -113,5 +113,88 @@ public static class SampleDataSeeder
             context.Schedules.AddRange(schedules);
             await context.SaveChangesAsync();
         }
+
+        if (!await context.Vehicles.AnyAsync())
+        {
+            var line1 = await context.TransportLines.FirstAsync(x => x.LineNumber == "1");
+
+            context.Vehicles.Add(new Vehicle
+            {
+                TransportLineId = line1.Id,
+                RegistrationNumber = "PB1234AB",
+                VehicleType = "Автобус",
+                CurrentLatitude = 42.1450,
+                CurrentLongitude = 24.7480,
+                LastUpdateTime = DateTime.Now,
+                IsActive = true
+            });
+
+            await context.SaveChangesAsync();
+        }
+
+        if (!await context.ArrivalPredictions.AnyAsync())
+        {
+            var vehicle = await context.Vehicles.FirstAsync();
+            var stop = await context.Stops.FirstAsync();
+
+            context.ArrivalPredictions.Add(new ArrivalPrediction
+            {
+                VehicleId = vehicle.Id,
+                StopId = stop.Id,
+                EstimatedArrival = DateTime.Now.AddMinutes(4),
+                DelayMinutes = 2,
+                CalculatedAt = DateTime.Now
+            });
+
+            await context.SaveChangesAsync();
+        }
+
+        if (!await context.ServiceAlerts.AnyAsync())
+        {
+            var line1 = await context.TransportLines.FirstAsync(x => x.LineNumber == "1");
+
+            context.ServiceAlerts.Add(new ServiceAlert
+            {
+                Title = "Временно закъснение по линия 1",
+                Description = "Поради натоварен трафик са възможни закъснения до 10 минути.",
+                AffectedLineId = line1.Id,
+                StartDate = DateTime.Now.AddHours(-1),
+                EndDate = DateTime.Now.AddHours(8),
+                IsActive = true
+            });
+
+            await context.SaveChangesAsync();
+        }
+        if (!await context.RouteStops.AnyAsync())
+        {
+            var route = await context.Routes.FirstAsync();
+            var stops = await context.Stops.OrderBy(x => x.Id).Take(3).ToListAsync();
+
+            context.RouteStops.AddRange(
+                new RouteStop
+                {
+                    RouteId = route.Id,
+                    StopId = stops[0].Id,
+                    OrderIndex = 1,
+                    DistanceFromStartKm = 0
+                },
+                new RouteStop
+                {
+                    RouteId = route.Id,
+                    StopId = stops[1].Id,
+                    OrderIndex = 2,
+                    DistanceFromStartKm = 1.2
+                },
+                new RouteStop
+                {
+                    RouteId = route.Id,
+                    StopId = stops[2].Id,
+                    OrderIndex = 3,
+                    DistanceFromStartKm = 2.6
+                }
+            );
+
+            await context.SaveChangesAsync();
+        }
     }
 }

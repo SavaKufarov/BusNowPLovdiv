@@ -16,5 +16,6 @@ namespace BusNow.Core.Entities
 
         public ICollection<RouteStop> RouteStops { get; set; } = new List<RouteStop>();
         public ICollection<ArrivalPrediction> ArrivalPredictions { get; set; } = new List<ArrivalPrediction>();
+        public ICollection<FavoriteStop> FavoriteStops { get; set; } = new List<FavoriteStop>();
     }
 }

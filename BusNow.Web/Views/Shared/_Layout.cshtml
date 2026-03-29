@@ -26,6 +26,19 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Lines" asp-action="Index">Линии</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Stops" asp-action="Index">Спирки</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Alerts" asp-action="Index">Известия</a>
+                        </li>
+
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Favorites" asp-action="Index">Любими</a>
+                            </li>
+                        }
 
                         @if (User.IsInRole("Admin"))
                         {

@@ -1,0 +1,97 @@
+﻿@model BusNow.Core.Entities.Stop
+@using BusNow.Core.Entities
+
+@{
+    ViewData["Title"] = "Детайли за спирка";
+    var routeStops = ViewBag.RouteStops as List<RouteStop> ?? new List<RouteStop>();
+}
+
+<div class="container mt-4">
+    <h1 class="mb-3">@Model.Name</h1>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <p><strong>Код на спирка:</strong> @Model.Code</p>
+            <p><strong>Координати:</strong> @Model.Latitude, @Model.Longitude</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">Прогнозни пристигания</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.ArrivalPredictions.Any())
+                    {
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Линия</th>
+                                    <th>Рег. номер</th>
+                                    <th>Пристига в</th>
+                                    <th>Закъснение</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var prediction in Model.ArrivalPredictions.OrderBy(x => x.EstimatedArrival))
+                                {
+                                    var minutes = (int)Math.Max(0, Math.Ceiling((prediction.EstimatedArrival - DateTime.Now).TotalMinutes));
+                                    <tr>
+                                        <td>@prediction.Vehicle?.TransportLine?.LineNumber</td>
+                                        <td>@prediction.Vehicle?.RegistrationNumber</td>
+                                        <td>@minutes мин.</td>
+                                        <td>@prediction.DelayMinutes мин.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="mb-0">Няма налични прогнозни данни.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">Маршрути през тази спирка</h5>
+                </div>
+                <div class="card-body">
+                    @if (routeStops.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var rs in routeStops)
+                            {
+                                <li class="list-group-item">
+                                    <strong>Линия @rs.Route?.TransportLine?.LineNumber</strong> -
+                                    @rs.Route?.Name
+                                    <br />
+                                    <small class="text-muted">@rs.Route?.Direction</small>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="mb-0">Няма данни за маршрути през тази спирка.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex gap-2">
+        <a asp-action="Index" class="btn btn-secondary">Назад</a>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a asp-controller="Favorites" asp-action="AddStop" asp-route-stopId="@Model.Id" class="btn btn-outline-primary">
+                Добави в любими
+            </a>
+        }
+    </div>
+</div>

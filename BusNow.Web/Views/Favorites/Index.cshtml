@@ -1,0 +1,65 @@
+﻿@using BusNow.Core.Entities
+
+@{
+    ViewData["Title"] = "Любими";
+    var favoriteStops = ViewBag.FavoriteStops as List<FavoriteStop> ?? new List<FavoriteStop>();
+    var favoriteLines = ViewBag.FavoriteLines as List<FavoriteLine> ?? new List<FavoriteLine>();
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Любими</h1>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">Любими спирки</h5>
+                </div>
+                <div class="card-body">
+                    @if (favoriteStops.Any())
+                    {
+                        <ul class="list-group">
+                            @foreach (var item in favoriteStops)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>@item.Stop?.Name (@item.Stop?.Code)</span>
+                                    <a asp-action="RemoveStop" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Премахни</a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="mb-0">Нямаш добавени любими спирки.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">Любими линии</h5>
+                </div>
+                <div class="card-body">
+                    @if (favoriteLines.Any())
+                    {
+                        <ul class="list-group">
+                            @foreach (var item in favoriteLines)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>Линия @item.Line?.LineNumber - @item.Line?.Type</span>
+                                    <a asp-action="RemoveLine" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Премахни</a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="mb-0">Нямаш добавени любими линии.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

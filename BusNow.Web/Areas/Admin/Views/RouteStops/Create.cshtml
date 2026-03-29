@@ -1,0 +1,51 @@
+﻿@model BusNow.Core.Entities.RouteStop
+
+@{
+    ViewData["Title"] = "Добавяне на спирка към маршрут";
+}
+
+<h1>Добавяне на спирка към маршрут</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="RouteId" class="form-label">Маршрут</label>
+                <select asp-for="RouteId" class="form-select" asp-items="ViewBag.RouteId"></select>
+                <span asp-validation-for="RouteId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="StopId" class="form-label">Спирка</label>
+                <select asp-for="StopId" class="form-select" asp-items="ViewBag.StopId"></select>
+                <span asp-validation-for="StopId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="OrderIndex" class="form-label">Поредност</label>
+                <input asp-for="OrderIndex" class="form-control" />
+                <span asp-validation-for="OrderIndex" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DistanceFromStartKm" class="form-label">Разстояние от началото (км)</label>
+                <input asp-for="DistanceFromStartKm" class="form-control" />
+                <span asp-validation-for="DistanceFromStartKm" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">Създай</button>
+                <a asp-action="Index" class="btn btn-secondary">Назад</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

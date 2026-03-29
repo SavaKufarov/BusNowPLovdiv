@@ -1,0 +1,44 @@
+﻿@model IEnumerable<BusNow.Core.Entities.Stop>
+
+@{
+    ViewData["Title"] = "Спирки";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Спирки</h1>
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-8">
+            <input type="text" name="search" value="@ViewBag.Search" class="form-control"
+                   placeholder="Търси по име или код на спирка" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Търси</button>
+        </div>
+        <div class="col-md-2">
+            <a asp-action="Index" class="btn btn-outline-secondary w-100">Изчисти</a>
+        </div>
+    </form>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">Няма намерени спирки.</div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var stop in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@stop.Name</h5>
+                            <p class="card-text"><strong>Код:</strong> @stop.Code</p>
+                            <a asp-action="Details" asp-route-id="@stop.Id" class="btn btn-primary">Детайли</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

@@ -79,7 +79,14 @@
         </div>
     </div>
 
-    <div class="mt-4">
+    <div class="mt-4 d-flex gap-2">
         <a asp-action="Index" class="btn btn-secondary">Назад</a>
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a asp-controller="Favorites" asp-action="AddLine" asp-route-lineId="@Model.Id" class="btn btn-outline-primary">
+                Добави в любими
+            </a>
+        }
     </div>
 </div>

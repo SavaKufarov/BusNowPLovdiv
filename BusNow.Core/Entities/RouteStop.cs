@@ -14,7 +14,7 @@ namespace BusNow.Core.Entities
         public int OrderIndex { get; set; }
         public double DistanceFromStartKm { get; set; }
 
-        public Route Route { get; set; } = null!;
-        public Stop Stop { get; set; } = null!;
+        public Route? Route { get; set; }
+        public Stop? Stop { get; set; }
     }
 }
