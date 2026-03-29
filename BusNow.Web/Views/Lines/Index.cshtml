@@ -1,0 +1,51 @@
+﻿@model IEnumerable<BusNow.Core.Entities.TransportLine>
+
+@{
+    ViewData["Title"] = "Линии";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Търсене на линии</h1>
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-8">
+            <input type="text" name="search" value="@ViewBag.Search" class="form-control"
+                   placeholder="Търси по номер, тип или направление" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Търси</button>
+        </div>
+        <div class="col-md-2">
+            <a asp-action="Index" class="btn btn-outline-secondary w-100">Изчисти</a>
+        </div>
+    </form>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">
+            Няма намерени линии.
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var line in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Линия @line.LineNumber</h5>
+                            <p class="card-text mb-1"><strong>Тип:</strong> @line.Type</p>
+                            <p class="card-text mb-1"><strong>Посока 1:</strong> @line.DirectionA</p>
+                            <p class="card-text mb-3"><strong>Посока 2:</strong> @line.DirectionB</p>
+
+                            <a asp-action="Details" asp-route-id="@line.Id" class="btn btn-primary">
+                                Виж детайли
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

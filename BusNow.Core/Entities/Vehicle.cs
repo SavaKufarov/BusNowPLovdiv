@@ -17,7 +17,7 @@ namespace BusNow.Core.Entities
         public DateTime LastUpdateTime { get; set; }
         public bool IsActive { get; set; } = true;
 
-        public TransportLine TransportLine { get; set; } = null!;
+        public TransportLine? TransportLine { get; set; } = null!;
         public ICollection<ArrivalPrediction> ArrivalPredictions { get; set; } = new List<ArrivalPrediction>();
     }
 }

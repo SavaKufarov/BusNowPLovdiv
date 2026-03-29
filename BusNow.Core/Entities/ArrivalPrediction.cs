@@ -15,7 +15,7 @@ namespace BusNow.Core.Entities
         public int DelayMinutes { get; set; }
         public DateTime CalculatedAt { get; set; }
 
-        public Vehicle Vehicle { get; set; } = null!;
-        public Stop Stop { get; set; } = null!;
+        public Vehicle? Vehicle { get; set; }
+        public Stop? Stop { get; set; }
     }
 }

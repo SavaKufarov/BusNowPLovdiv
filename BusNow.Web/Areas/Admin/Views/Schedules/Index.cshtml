@@ -1,0 +1,59 @@
+﻿@model IEnumerable<BusNow.Core.Entities.Schedule>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Разпиания</h1>
+
+<p>
+    <a asp-action="Create">Създай</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartureTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsWeekend)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsHoliday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransportLine)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Route)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartureTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsWeekend)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsHoliday)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransportLine.DirectionA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Route.Direction)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Редакция</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Детайли</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Изтрий</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

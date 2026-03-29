@@ -1,0 +1,56 @@
+﻿@model BusNow.Core.Entities.Route
+
+@{
+    ViewData["Title"] = "Създаване на маршрут";
+}
+
+<h1>Създаване на маршрут</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="TransportLineId" class="form-label">Линия</label>
+                <select asp-for="TransportLineId" class="form-select" asp-items="ViewBag.TransportLineId"></select>
+                <span asp-validation-for="TransportLineId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Име</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Direction" class="form-label">Направление</label>
+                <input asp-for="Direction" class="form-control" />
+                <span asp-validation-for="Direction" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="GeoJson" class="form-label">GeoJson</label>
+                <textarea asp-for="GeoJson" class="form-control"></textarea>
+                <span asp-validation-for="GeoJson" class="text-danger"></span>
+            </div>
+
+            <div class="form-check mb-3">
+                <input asp-for="IsTemporary" class="form-check-input" />
+                <label asp-for="IsTemporary" class="form-check-label">Временен маршрут</label>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">Създай</button>
+                <a asp-action="Index" class="btn btn-secondary">Назад</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

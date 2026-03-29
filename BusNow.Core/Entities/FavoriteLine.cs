@@ -12,7 +12,7 @@ namespace BusNow.Core.Entities
         public string UserId { get; set; } = null!;
         public int LineId { get; set; }
 
-        public ApplicationUser User { get; set; } = null!;
-        public TransportLine Line { get; set; } = null!;
+        public ApplicationUser? User { get; set; }
+        public TransportLine? Line { get; set; }
     }
 }

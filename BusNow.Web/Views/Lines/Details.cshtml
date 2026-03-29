@@ -1,0 +1,85 @@
+﻿@model BusNow.Core.Entities.TransportLine
+
+@{
+    ViewData["Title"] = "Детайли за линия";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-3">Линия @Model.LineNumber</h1>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <p><strong>Тип:</strong> @Model.Type</p>
+            <p><strong>Посока 1:</strong> @Model.DirectionA</p>
+            <p><strong>Посока 2:</strong> @Model.DirectionB</p>
+            <p><strong>Активна:</strong> @(Model.IsActive ? "Да" : "Не")</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">Маршрути</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Routes.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var route in Model.Routes)
+                            {
+                                <li class="list-group-item">
+                                    <strong>@route.Name</strong> - @route.Direction
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="mb-0">Няма добавени маршрути.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">Разписания</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Schedules.Any())
+                    {
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Час</th>
+                                    <th>Уикенд</th>
+                                    <th>Празник</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var schedule in Model.Schedules.OrderBy(x => x.DepartureTime))
+                                {
+                                    <tr>
+                                        <td>@schedule.DepartureTime.ToString(@"hh\:mm")</td>
+                                        <td>@(schedule.IsWeekend ? "Да" : "Не")</td>
+                                        <td>@(schedule.IsHoliday ? "Да" : "Не")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="mb-0">Няма добавено разписание.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary">Назад</a>
+    </div>
+</div>

@@ -15,7 +15,8 @@ namespace BusNow.Core.Entities
         public string? GeoJson { get; set; }
         public bool IsTemporary { get; set; }
 
-        public TransportLine TransportLine { get; set; } = null!;
+        public TransportLine? TransportLine { get; set; }
         public ICollection<RouteStop> RouteStops { get; set; } = new List<RouteStop>();
+        public ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
     }
 }

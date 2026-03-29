@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Административен панел";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Административен панел</h1>
+
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Линии</h5>
+                    <p>Управление на автобусни линии</p>
+                    <a asp-area="Admin" asp-controller="TransportLines" asp-action="Index" class="btn btn-primary">Отвори</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Спирки</h5>
+                    <p>Добавяне и редакция на спирки</p>
+                    <a asp-area="Admin" asp-controller="Stops" asp-action="Index" class="btn btn-primary">Отвори</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Маршрути</h5>
+                    <p>Управление на маршрути</p>
+                    <a asp-area="Admin" asp-controller="Routes" asp-action="Index" class="btn btn-primary">Отвори</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5>Разписания</h5>
+                    <p>Редакция на часове</p>
+                    <a asp-area="Admin" asp-controller="Schedules" asp-action="Index" class="btn btn-primary">Отвори</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

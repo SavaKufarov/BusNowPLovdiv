@@ -73,6 +73,18 @@ namespace BusNow.Infrastructure.Data
             builder.Entity<ServiceAlert>()
                 .Property(x => x.Title)
                 .HasMaxLength(150);
+
+            builder.Entity<ServiceAlert>()
+                .HasOne(x => x.AffectedLine)
+                .WithMany()
+                .HasForeignKey(x => x.AffectedLineId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ServiceAlert>()
+                .HasOne(x => x.AffectedRoute)
+                .WithMany()
+                .HasForeignKey(x => x.AffectedRouteId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

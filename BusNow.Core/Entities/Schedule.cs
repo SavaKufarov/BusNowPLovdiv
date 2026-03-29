@@ -15,7 +15,7 @@ namespace BusNow.Core.Entities
         public bool IsWeekend { get; set; }
         public bool IsHoliday { get; set; }
 
-        public TransportLine TransportLine { get; set; } = null!;
+        public TransportLine? TransportLine { get; set; }
         public Route? Route { get; set; }
     }
 }

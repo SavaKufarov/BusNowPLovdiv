@@ -1,8 +1,15 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "BusNow Пловдив";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    <div class="p-5 mb-4 bg-light rounded-3 shadow-sm">
+        <div class="container-fluid py-4">
+            <h1 class="display-5 fw-bold">BusNow Пловдив</h1>
+            <p class="col-md-8 fs-5">
+                Уеб приложение за визуализация и следене на градския транспорт в Пловдив.
+            </p>
+            <a asp-controller="Lines" asp-action="Index" class="btn btn-primary btn-lg">Търси линии</a>
+        </div>
+    </div>
 </div>
