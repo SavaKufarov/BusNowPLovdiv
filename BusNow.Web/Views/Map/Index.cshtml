@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Карта";
+}
+
+<div class="container-fluid mt-3">
+    <h2 class="mb-3">Карта на градския транспорт</h2>
+    <div id="map" style="height: 600px; border-radius: 10px;"></div>
+</div>
+
+@section Scripts {
+    <script>
+        var map = L.map('map').setView([42.1354, 24.7453], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        var stops = @Html.Raw(ViewBag.StopsJson);
+        var routes = @Html.Raw(ViewBag.RoutesJson);
+
+        stops.forEach(function (s) {
+            if (s.latitude && s.longitude) {
+                L.marker([s.latitude, s.longitude])
+                    .addTo(map)
+                    .bindPopup("<b>" + s.name + "</b><br>Код: " + s.code);
+            }
+        });
+
+        routes.forEach(function (r) {
+            if (!r.points || r.points.length < 2) return;
+
+            var coords = r.points.map(function (p) {
+                return [p.latitude, p.longitude];
+            });
+
+            L.polyline(coords, {
+                color: getColorByLine(r.lineNumber),
+                weight: 5
+            })
+            .addTo(map)
+            .bindPopup("<b>Линия " + r.lineNumber + "</b><br>" + r.name + "<br>" + r.direction);
+        });
+
+        function getColorByLine(lineNumber) {
+            const colorMap = {
+                "1": "blue",
+                "6": "red",
+                "10": "green",
+                "12": "orange",
+                "15": "purple"
+            };
+
+            return colorMap[lineNumber] || "darkblue";
+        }
+    </script>
+}

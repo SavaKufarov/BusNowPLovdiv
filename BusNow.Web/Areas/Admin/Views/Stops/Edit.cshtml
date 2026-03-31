@@ -1,49 +1,81 @@
 ﻿@model BusNow.Core.Entities.Stop
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редакция на спирка";
 }
 
-<h1>Edit</h1>
+<h1>Редакция на спирка</h1>
 
-<h4>Stop</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Име</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Code" class="control-label"></label>
+
+            <div class="mb-3">
+                <label asp-for="Code" class="form-label">Код</label>
                 <input asp-for="Code" class="form-control" />
                 <span asp-validation-for="Code" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Latitude" class="control-label"></label>
-                <input asp-for="Latitude" class="form-control" />
+
+            <div class="mb-3">
+                <label asp-for="Latitude" class="form-label">Географска ширина</label>
+                <input asp-for="Latitude" class="form-control" id="Latitude" />
                 <span asp-validation-for="Latitude" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Longitude" class="control-label"></label>
-                <input asp-for="Longitude" class="form-control" />
+
+            <div class="mb-3">
+                <label asp-for="Longitude" class="form-label">Географска дължина</label>
+                <input asp-for="Longitude" class="form-control" id="Longitude" />
                 <span asp-validation-for="Longitude" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <div class="alert alert-info">
+                Щракни върху картата, за да промениш местоположението.
+            </div>
+
+            <div id="stopMap" style="height: 400px; border-radius: 10px;" class="mb-3"></div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Запази</button>
+                <a asp-action="Index" class="btn btn-secondary">Назад</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        var initialLat = parseFloat(document.getElementById('Latitude').value) || 42.1354;
+        var initialLng = parseFloat(document.getElementById('Longitude').value) || 24.7453;
+
+        var map = L.map('stopMap').setView([initialLat, initialLng], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        var marker = L.marker([initialLat, initialLng]).addTo(map);
+
+        map.on('click', function (e) {
+            var lat = e.latlng.lat.toFixed(6);
+            var lng = e.latlng.lng.toFixed(6);
+
+            document.getElementById('Latitude').value = lat;
+            document.getElementById('Longitude').value = lng;
+
+            marker.setLatLng(e.latlng);
+        });
+    </script>
 }
