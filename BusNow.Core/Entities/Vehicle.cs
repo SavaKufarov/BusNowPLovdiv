@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BusNow.Core.Entities;
 
-namespace BusNow.Core.Entities
+public class Vehicle
 {
-    public class Vehicle
-    {
-        public int Id { get; set; }
-        public int TransportLineId { get; set; }
-        public string RegistrationNumber { get; set; } = null!;
-        public string VehicleType { get; set; } = null!;
-        public double CurrentLatitude { get; set; }
-        public double CurrentLongitude { get; set; }
-        public DateTime LastUpdateTime { get; set; }
-        public bool IsActive { get; set; } = true;
+    public int Id { get; set; }
 
-        public TransportLine? TransportLine { get; set; } = null!;
-        public ICollection<ArrivalPrediction> ArrivalPredictions { get; set; } = new List<ArrivalPrediction>();
-    }
+    public int TransportLineId { get; set; }
+    public int? RouteId { get; set; }
+    public int CurrentStopOrderIndex { get; set; } = 1;
+
+    public string RegistrationNumber { get; set; } = null!;
+    public string VehicleType { get; set; } = null!;
+    public double CurrentLatitude { get; set; }
+    public double CurrentLongitude { get; set; }
+    public DateTime LastUpdateTime { get; set; }
+    public bool IsActive { get; set; } = true;
+
+    public TransportLine? TransportLine { get; set; }
+    public Route? Route { get; set; }
+    public ICollection<ArrivalPrediction> ArrivalPredictions { get; set; } = new List<ArrivalPrediction>();
 }

@@ -4,10 +4,12 @@
 
 <div class="container-fluid mt-3">
     <h2 class="mb-3">Карта на градския транспорт</h2>
-    <div id="map" style="height: 600px; border-radius: 10px;"></div>
+    <div id="map" style="height: 650px; border-radius: 10px;"></div>
 </div>
 
 @section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+
     <script>
         var map = L.map('map').setView([42.1354, 24.7453], 13);
 
@@ -18,14 +20,21 @@
         var stops = @Html.Raw(ViewBag.StopsJson);
         var routes = @Html.Raw(ViewBag.RoutesJson);
 
+        var vehicleMarkers = {};
+
+        // Спирки
         stops.forEach(function (s) {
             if (s.latitude && s.longitude) {
                 L.marker([s.latitude, s.longitude])
                     .addTo(map)
-                    .bindPopup("<b>" + s.name + "</b><br>Код: " + s.code);
+                    .bindPopup(
+                        "<b>" + s.name + "</b><br>Код: " + s.code +
+                        "<br><a href='/Stops/Details/" + s.id + "'>Виж детайли</a>"
+                    );
             }
         });
 
+        // Маршрути
         routes.forEach(function (r) {
             if (!r.points || r.points.length < 2) return;
 
@@ -39,6 +48,38 @@
             })
             .addTo(map)
             .bindPopup("<b>Линия " + r.lineNumber + "</b><br>" + r.name + "<br>" + r.direction);
+        });
+
+        // SignalR
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/transportHub")
+            .build();
+
+        connection.on("ReceiveVehiclePositions", function (vehicles) {
+            vehicles.forEach(function (v) {
+                if (!v.latitude || !v.longitude) return;
+
+                if (vehicleMarkers[v.id]) {
+                    vehicleMarkers[v.id].setLatLng([v.latitude, v.longitude]);
+                    vehicleMarkers[v.id].setPopupContent(
+                        "<b>Линия " + (v.lineNumber || "") + "</b><br>" +
+                        "Рег. №: " + (v.registrationNumber || "") + "<br>" +
+                        "Последно обновяване: " + (v.lastUpdateTime || "")
+                    );
+                } else {
+                    vehicleMarkers[v.id] = L.marker([v.latitude, v.longitude])
+                        .addTo(map)
+                        .bindPopup(
+                            "<b>Линия " + (v.lineNumber || "") + "</b><br>" +
+                            "Рег. №: " + (v.registrationNumber || "") + "<br>" +
+                            "Последно обновяване: " + (v.lastUpdateTime || "")
+                        );
+                }
+            });
+        });
+
+        connection.start().catch(function (err) {
+            console.error(err.toString());
         });
 
         function getColorByLine(lineNumber) {

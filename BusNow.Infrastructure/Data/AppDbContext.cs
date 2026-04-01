@@ -85,6 +85,11 @@ namespace BusNow.Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(x => x.AffectedRouteId)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Vehicle>()
+                .HasOne(v => v.Route)
+                .WithMany()
+                .HasForeignKey(v => v.RouteId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

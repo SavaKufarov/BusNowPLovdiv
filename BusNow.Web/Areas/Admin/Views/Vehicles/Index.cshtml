@@ -1,0 +1,83 @@
+﻿@model IEnumerable<BusNow.Core.Entities.Vehicle>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrentStopOrderIndex)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegistrationNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VehicleType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrentLatitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrentLongitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastUpdateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransportLine)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Route)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentStopOrderIndex)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegistrationNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentLatitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentLongitude)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransportLine.DirectionA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Route.Direction)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

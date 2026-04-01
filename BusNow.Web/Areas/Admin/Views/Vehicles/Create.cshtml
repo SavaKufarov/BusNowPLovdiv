@@ -1,0 +1,56 @@
+﻿@model BusNow.Core.Entities.Vehicle
+
+@{
+    ViewData["Title"] = "Създаване на превозно средство";
+}
+
+<h1>Създаване на превозно средство</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="TransportLineId" class="form-label">Линия</label>
+                <select asp-for="TransportLineId" class="form-select" asp-items="ViewBag.TransportLineId"></select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="RouteId" class="form-label">Маршрут</label>
+                <select asp-for="RouteId" class="form-select" asp-items="ViewBag.RouteId">
+                    <option value="">-- избери маршрут --</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="RegistrationNumber" class="form-label">Регистрационен номер</label>
+                <input asp-for="RegistrationNumber" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="VehicleType" class="form-label">Тип превозно средство</label>
+                <input asp-for="VehicleType" class="form-control" />
+            </div>
+
+            <div class="form-check mb-3">
+                <input asp-for="IsActive" class="form-check-input" />
+                <label asp-for="IsActive" class="form-check-label">Активно</label>
+            </div>
+
+            <div class="alert alert-info">
+                Координатите и началната позиция ще се зададат автоматично от първата спирка на избрания маршрут.
+            </div>
+
+            <button type="submit" class="btn btn-success">Създай</button>
+            <a asp-action="Index" class="btn btn-secondary">Назад</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

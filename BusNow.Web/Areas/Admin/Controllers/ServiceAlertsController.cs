@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusNow.Web.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace BusNow.Web.Areas.Admin.Controllers
 {
@@ -16,10 +18,12 @@ namespace BusNow.Web.Areas.Admin.Controllers
     public class ServiceAlertsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IHubContext<TransportHub> _hubContext;
 
-        public ServiceAlertsController(AppDbContext context)
+        public ServiceAlertsController(AppDbContext context, IHubContext<TransportHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         // GET: Admin/ServiceAlerts
@@ -68,6 +72,13 @@ namespace BusNow.Web.Areas.Admin.Controllers
             {
                 _context.Add(serviceAlert);
                 await _context.SaveChangesAsync();
+                await _hubContext.Clients.All.SendAsync("ReceiveAlert", new
+                {
+                    title = serviceAlert.Title,
+                    description = serviceAlert.Description,
+                    startDate = serviceAlert.StartDate.ToString("dd.MM.yyyy HH:mm"),
+                    endDate = serviceAlert.EndDate.ToString("dd.MM.yyyy HH:mm")
+                });
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AffectedLineId"] = new SelectList(_context.TransportLines.OrderBy(x => x.LineNumber), "Id", "LineNumber", serviceAlert.AffectedLineId);

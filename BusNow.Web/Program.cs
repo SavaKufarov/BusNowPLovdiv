@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using BusNow.Web.Data;
 using BusNow.Application.Services;
 using System.Globalization;
+using BusNow.Web.Hubs;
+using BusNow.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddSignalR();
 builder.Services.AddScoped<ArrivalPredictionService>();
+builder.Services.AddHostedService<VehicleSimulationService>();
+
 
 var app = builder.Build();
 
@@ -73,5 +77,7 @@ using (var scope = app.Services.CreateScope())
 var cultureInfo = new CultureInfo("en-US");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+app.MapHub<TransportHub>("/transportHub");
 
 app.Run();

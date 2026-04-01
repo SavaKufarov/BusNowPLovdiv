@@ -23,35 +23,37 @@
                     <h5 class="mb-0">Прогнозни пристигания</h5>
                 </div>
                 <div class="card-body">
-                    @if (Model.ArrivalPredictions.Any())
-                    {
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Линия</th>
-                                    <th>Рег. номер</th>
-                                    <th>Пристига в</th>
-                                    <th>Закъснение</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    <table class="table table-striped" id="etaTable">
+                        <thead>
+                            <tr>
+                                <th>Линия</th>
+                                <th>Рег. номер</th>
+                                <th>Пристига в</th>
+                                <th>Закъснение</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.ArrivalPredictions.Any())
+                            {
                                 @foreach (var prediction in Model.ArrivalPredictions.OrderBy(x => x.EstimatedArrival))
                                 {
                                     var minutes = (int)Math.Max(0, Math.Ceiling((prediction.EstimatedArrival - DateTime.Now).TotalMinutes));
-                                    <tr>
+                                    <tr data-stop-id="@prediction.StopId" data-vehicle-id="@prediction.VehicleId">
                                         <td>@prediction.Vehicle?.TransportLine?.LineNumber</td>
                                         <td>@prediction.Vehicle?.RegistrationNumber</td>
                                         <td>@minutes мин.</td>
                                         <td>@prediction.DelayMinutes мин.</td>
                                     </tr>
                                 }
-                            </tbody>
-                        </table>
-                    }
-                    else
-                    {
-                        <p class="mb-0">Няма налични прогнозни данни.</p>
-                    }
+                            }
+                            else
+                            {
+                                <tr id="noEtaRow">
+                                    <td colspan="4">Няма налични прогнозни данни.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -95,3 +97,41 @@
         }
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <script>
+        const currentStopId = @Model.Id;
+
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/transportHub")
+            .build();
+
+        connection.on("ReceiveArrivalPredictions", function (predictions) {
+            const tbody = document.querySelector("#etaTable tbody");
+            const stopPredictions = predictions.filter(p => p.stopId === currentStopId);
+
+            tbody.innerHTML = "";
+
+            if (stopPredictions.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4">Няма налични прогнозни данни.</td></tr>`;
+                return;
+            }
+
+            stopPredictions.forEach(function (p) {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${p.lineNumber ?? ""}</td>
+                        <td>${p.registrationNumber ?? ""}</td>
+                        <td>${p.etaMinutes} мин.</td>
+                        <td>${p.delayMinutes} мин.</td>
+                    </tr>
+                `;
+            });
+        });
+
+        connection.start().catch(function (err) {
+            console.error(err.toString());
+        });
+    </script>
+}
