@@ -83,6 +83,7 @@ namespace BusNow.Web.Areas.Admin.Controllers
                         vehicle.CurrentLongitude = firstRouteStop.Stop.Longitude;
                     }
                 }
+                vehicle.IsForwardDirection = true;
 
                 _context.Add(vehicle);
                 await _context.SaveChangesAsync();

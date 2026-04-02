@@ -1,4 +1,5 @@
-﻿using BusNow.Infrastructure.Data;
+﻿using BusNow.Core.Entities;
+using BusNow.Infrastructure.Data;
 using BusNow.Web.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +51,7 @@ public class VehicleSimulationService : BackgroundService
                     var firstStop = routeStops.First();
 
                     vehicle.CurrentStopOrderIndex = firstStop.OrderIndex;
+                    vehicle.IsForwardDirection = true;
 
                     if (firstStop.Stop != null)
                     {
@@ -61,43 +63,53 @@ public class VehicleSimulationService : BackgroundService
                     continue;
                 }
 
-                var nextStop = routeStops
-                    .FirstOrDefault(rs => rs.OrderIndex == vehicle.CurrentStopOrderIndex + 1);
+                RouteStop? targetStop;
 
-                if (nextStop == null)
+                if (vehicle.IsForwardDirection)
                 {
-                    var firstStop = routeStops.First();
+                    targetStop = routeStops
+                        .FirstOrDefault(rs => rs.OrderIndex == vehicle.CurrentStopOrderIndex + 1);
 
-                    vehicle.CurrentStopOrderIndex = firstStop.OrderIndex;
-
-                    if (firstStop.Stop != null)
+                    if (targetStop == null)
                     {
-                        vehicle.CurrentLatitude = firstStop.Stop.Latitude;
-                        vehicle.CurrentLongitude = firstStop.Stop.Longitude;
-                    }
+                        vehicle.IsForwardDirection = false;
 
-                    vehicle.LastUpdateTime = DateTime.Now;
-                    continue;
+                        targetStop = routeStops
+                            .FirstOrDefault(rs => rs.OrderIndex == vehicle.CurrentStopOrderIndex - 1);
+                    }
+                }
+                else
+                {
+                    targetStop = routeStops
+                        .FirstOrDefault(rs => rs.OrderIndex == vehicle.CurrentStopOrderIndex - 1);
+
+                    if (targetStop == null)
+                    {
+                        vehicle.IsForwardDirection = true;
+
+                        targetStop = routeStops
+                            .FirstOrDefault(rs => rs.OrderIndex == vehicle.CurrentStopOrderIndex + 1);
+                    }
                 }
 
-                if (nextStop.Stop == null)
+                if (targetStop?.Stop == null)
                     continue;
 
                 MoveVehicleTowards(
                     vehicle,
-                    nextStop.Stop.Latitude,
-                    nextStop.Stop.Longitude,
+                    targetStop.Stop.Latitude,
+                    targetStop.Stop.Longitude,
                     0.0008);
 
-                var distanceToNext = CalculateDistanceKm(
+                var distanceToTarget = CalculateDistanceKm(
                     vehicle.CurrentLatitude,
                     vehicle.CurrentLongitude,
-                    nextStop.Stop.Latitude,
-                    nextStop.Stop.Longitude);
+                    targetStop.Stop.Latitude,
+                    targetStop.Stop.Longitude);
 
-                if (distanceToNext < 0.08)
+                if (distanceToTarget < 0.08)
                 {
-                    vehicle.CurrentStopOrderIndex = nextStop.OrderIndex;
+                    vehicle.CurrentStopOrderIndex = targetStop.OrderIndex;
                 }
 
                 vehicle.LastUpdateTime = DateTime.Now;
@@ -123,7 +135,8 @@ public class VehicleSimulationService : BackgroundService
             registrationNumber = v.RegistrationNumber,
             latitude = v.CurrentLatitude,
             longitude = v.CurrentLongitude,
-            lastUpdateTime = v.LastUpdateTime.ToString("HH:mm:ss")
+            lastUpdateTime = v.LastUpdateTime.ToString("HH:mm:ss"),
+            isForwardDirection = v.IsForwardDirection
         }).ToList();
 
         await _hubContext.Clients.All.SendAsync(
@@ -146,12 +159,30 @@ public class VehicleSimulationService : BackgroundService
 
             var routeStops = await context.RouteStops
                 .Include(rs => rs.Stop)
-                .Where(rs => rs.RouteId == vehicle.RouteId &&
-                             rs.OrderIndex >= vehicle.CurrentStopOrderIndex)
+                .Where(rs => rs.RouteId == vehicle.RouteId)
                 .OrderBy(rs => rs.OrderIndex)
                 .ToListAsync(stoppingToken);
 
-            foreach (var rs in routeStops)
+            if (!routeStops.Any())
+                continue;
+
+            List<RouteStop> upcomingStops;
+
+            if (vehicle.IsForwardDirection)
+            {
+                upcomingStops = routeStops
+                    .Where(rs => rs.OrderIndex >= vehicle.CurrentStopOrderIndex)
+                    .ToList();
+            }
+            else
+            {
+                upcomingStops = routeStops
+                    .Where(rs => rs.OrderIndex <= vehicle.CurrentStopOrderIndex)
+                    .OrderByDescending(rs => rs.OrderIndex)
+                    .ToList();
+            }
+
+            foreach (var rs in upcomingStops)
             {
                 if (rs.Stop == null)
                     continue;

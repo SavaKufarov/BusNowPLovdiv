@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Детайли за спирка";
     var routeStops = ViewBag.RouteStops as List<RouteStop> ?? new List<RouteStop>();
+    var predictions = ViewBag.Predictions as List<ArrivalPrediction> ?? new List<ArrivalPrediction>();
 }
 
 <div class="container mt-4">
@@ -33,12 +34,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (Model.ArrivalPredictions.Any())
+                            @if (predictions.Any())
                             {
-                                @foreach (var prediction in Model.ArrivalPredictions.OrderBy(x => x.EstimatedArrival))
+                                @foreach (var prediction in predictions)
                                 {
                                     var minutes = (int)Math.Max(0, Math.Ceiling((prediction.EstimatedArrival - DateTime.Now).TotalMinutes));
-                                    <tr data-stop-id="@prediction.StopId" data-vehicle-id="@prediction.VehicleId">
+                                    <tr>
                                         <td>@prediction.Vehicle?.TransportLine?.LineNumber</td>
                                         <td>@prediction.Vehicle?.RegistrationNumber</td>
                                         <td>@minutes мин.</td>
@@ -48,7 +49,7 @@
                             }
                             else
                             {
-                                <tr id="noEtaRow">
+                                <tr>
                                     <td colspan="4">Няма налични прогнозни данни.</td>
                                 </tr>
                             }
@@ -70,8 +71,7 @@
                             @foreach (var rs in routeStops)
                             {
                                 <li class="list-group-item">
-                                    <strong>Линия @rs.Route?.TransportLine?.LineNumber</strong> -
-                                    @rs.Route?.Name
+                                    <strong>Линия @rs.Route?.TransportLine?.LineNumber</strong> - @rs.Route?.Name
                                     <br />
                                     <small class="text-muted">@rs.Route?.Direction</small>
                                 </li>

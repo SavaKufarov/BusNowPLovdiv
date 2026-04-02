@@ -35,6 +35,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddSignalR();
 builder.Services.AddScoped<ArrivalPredictionService>();
 builder.Services.AddHostedService<VehicleSimulationService>();
+builder.Services.AddScoped<TripPlannerService>();
 
 
 var app = builder.Build();

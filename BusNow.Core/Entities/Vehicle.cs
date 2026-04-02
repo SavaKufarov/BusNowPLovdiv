@@ -7,7 +7,7 @@ public class Vehicle
     public int TransportLineId { get; set; }
     public int? RouteId { get; set; }
     public int CurrentStopOrderIndex { get; set; } = 1;
-
+    public bool IsForwardDirection { get; set; } = true;
     public string RegistrationNumber { get; set; } = null!;
     public string VehicleType { get; set; } = null!;
     public double CurrentLatitude { get; set; }

@@ -40,13 +40,17 @@ public class StopsController : Controller
     public async Task<IActionResult> Details(int id)
     {
         var stop = await _context.Stops
-            .Include(x => x.ArrivalPredictions)
-                .ThenInclude(x => x.Vehicle)
-                    .ThenInclude(v => v!.TransportLine)
             .FirstOrDefaultAsync(x => x.Id == id);
 
         if (stop == null)
             return NotFound();
+
+        var predictions = await _context.ArrivalPredictions
+            .Include(x => x.Vehicle)
+                .ThenInclude(v => v!.TransportLine)
+            .Where(x => x.StopId == id)
+            .OrderBy(x => x.EstimatedArrival)
+            .ToListAsync();
 
         var routeStops = await _context.RouteStops
             .Include(x => x.Route)
@@ -55,6 +59,7 @@ public class StopsController : Controller
             .OrderBy(x => x.OrderIndex)
             .ToListAsync();
 
+        ViewBag.Predictions = predictions;
         ViewBag.RouteStops = routeStops;
 
         return View(stop);
