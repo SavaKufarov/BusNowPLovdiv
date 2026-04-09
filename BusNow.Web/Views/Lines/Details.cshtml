@@ -1,92 +1,64 @@
-﻿@model BusNow.Core.Entities.TransportLine
+﻿@model IEnumerable<BusNow.Core.Entities.TransportLine>
 
 @{
-    ViewData["Title"] = "Детайли за линия";
+    ViewData["Title"] = "Линии";
 }
 
-<div class="container mt-4">
-    <h1 class="mb-3">Линия @Model.LineNumber</h1>
+<div class="mb-4">
+    <h1 class="page-title">Линии</h1>
+    <p class="section-subtitle">Търси по номер, тип или направление.</p>
+</div>
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <p><strong>Тип:</strong> @Model.Type</p>
-            <p><strong>Посока 1:</strong> @Model.DirectionA</p>
-            <p><strong>Посока 2:</strong> @Model.DirectionB</p>
-            <p><strong>Активна:</strong> @(Model.IsActive ? "Да" : "Не")</p>
+<div class="search-panel mb-4">
+    <form method="get" class="row g-3">
+        <div class="col-md-8">
+            <input type="text" name="search" value="@ViewBag.Search" class="form-control"
+                   placeholder="Например: 1, автобус, Тракия..." />
         </div>
-    </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Търси</button>
+        </div>
+        <div class="col-md-2">
+            <a asp-action="Index" class="btn btn-secondary w-100">Изчисти</a>
+        </div>
+    </form>
+</div>
 
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <h5 class="mb-2">Няма намерени линии</h5>
+        <p class="mb-0">Опитай с друго търсене.</p>
+    </div>
+}
+else
+{
     <div class="row g-4">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h5 class="mb-0">Маршрути</h5>
-                </div>
-                <div class="card-body">
-                    @if (Model.Routes.Any())
-                    {
-                        <ul class="list-group list-group-flush">
-                            @foreach (var route in Model.Routes)
-                            {
-                                <li class="list-group-item">
-                                    <strong>@route.Name</strong> - @route.Direction
-                                </li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                        <p class="mb-0">Няма добавени маршрути.</p>
-                    }
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h5 class="mb-0">Разписания</h5>
-                </div>
-                <div class="card-body">
-                    @if (Model.Schedules.Any())
-                    {
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Час</th>
-                                    <th>Уикенд</th>
-                                    <th>Празник</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var schedule in Model.Schedules.OrderBy(x => x.DepartureTime))
-                                {
-                                    <tr>
-                                        <td>@schedule.DepartureTime.ToString(@"hh\:mm")</td>
-                                        <td>@(schedule.IsWeekend ? "Да" : "Не")</td>
-                                        <td>@(schedule.IsHoliday ? "Да" : "Не")</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                    else
-                    {
-                        <p class="mb-0">Няма добавено разписание.</p>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-4 d-flex gap-2">
-        <a asp-action="Index" class="btn btn-secondary">Назад</a>
-
-        @if (User.Identity?.IsAuthenticated == true)
+        @foreach (var line in Model)
         {
-            <a asp-controller="Favorites" asp-action="AddLine" asp-route-lineId="@Model.Id" class="btn btn-outline-primary">
-                Добави в любими
-            </a>
+            <div class="col-md-6 col-lg-4">
+                <div class="card quick-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="fw-bold mb-0">Линия @line.LineNumber</h5>
+                            <span class="badge-soft">@line.Type</span>
+                        </div>
+
+                        <p class="mb-2"><strong>Посока 1:</strong> @line.DirectionA</p>
+                        <p class="mb-3"><strong>Посока 2:</strong> @line.DirectionB</p>
+
+                        <div class="d-flex gap-2">
+                            <a asp-action="Details" asp-route-id="@line.Id" class="btn btn-primary">Детайли</a>
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <a asp-controller="Favorites" asp-action="AddLine" asp-route-lineId="@line.Id" class="btn btn-outline-primary">
+                                    Любима
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
     </div>
-</div>
+}

@@ -7,29 +7,43 @@
     var predictions = ViewBag.Predictions as List<ArrivalPrediction> ?? new List<ArrivalPrediction>();
 }
 
-<div class="container mt-4">
-    <h1 class="mb-3">@Model.Name</h1>
+<div class="mb-4">
+    <h1 class="page-title">@Model.Name</h1>
+    <p class="section-subtitle">Информация за спирката и прогнозни пристигания.</p>
+</div>
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <p><strong>Код на спирка:</strong> @Model.Code</p>
-            <p><strong>Координати:</strong> @Model.Latitude, @Model.Longitude</p>
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">Информация за спирката</div>
+            <div class="card-body">
+                <p><strong>Код:</strong> @Model.Code</p>
+                <p><strong>Координати:</strong> @Model.Latitude, @Model.Longitude</p>
+
+                <div class="d-flex gap-2 mt-3 flex-wrap">
+                    <a asp-action="Index" class="btn btn-secondary">Назад</a>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-controller="Favorites" asp-action="AddStop" asp-route-stopId="@Model.Id" class="btn btn-outline-primary">
+                            Добави в любими
+                        </a>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="row g-4">
-        <div class="col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h5 class="mb-0">Прогнозни пристигания</h5>
-                </div>
-                <div class="card-body">
-                    <table class="table table-striped" id="etaTable">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header">Прогнозни пристигания</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table align-middle" id="etaTable">
                         <thead>
                             <tr>
                                 <th>Линия</th>
                                 <th>Рег. номер</th>
-                                <th>Пристига в</th>
+                                <th>Пристига след</th>
                                 <th>Закъснение</th>
                             </tr>
                         </thead>
@@ -59,42 +73,32 @@
             </div>
         </div>
 
-        <div class="col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h5 class="mb-0">Маршрути през тази спирка</h5>
-                </div>
-                <div class="card-body">
-                    @if (routeStops.Any())
-                    {
-                        <ul class="list-group list-group-flush">
-                            @foreach (var rs in routeStops)
-                            {
-                                <li class="list-group-item">
-                                    <strong>Линия @rs.Route?.TransportLine?.LineNumber</strong> - @rs.Route?.Name
-                                    <br />
+        <div class="card">
+            <div class="card-header">Маршрути през тази спирка</div>
+            <div class="card-body">
+                @if (routeStops.Any())
+                {
+                    <div class="row g-3">
+                        @foreach (var rs in routeStops)
+                        {
+                            <div class="col-md-6">
+                                <div class="stats-card h-100">
+                                    <h6 class="fw-bold mb-1">Линия @rs.Route?.TransportLine?.LineNumber</h6>
+                                    <div>@rs.Route?.Name</div>
                                     <small class="text-muted">@rs.Route?.Direction</small>
-                                </li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                        <p class="mb-0">Няма данни за маршрути през тази спирка.</p>
-                    }
-                </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="empty-state">
+                        Няма данни за маршрути през тази спирка.
+                    </div>
+                }
             </div>
         </div>
-    </div>
-
-    <div class="mt-4 d-flex gap-2">
-        <a asp-action="Index" class="btn btn-secondary">Назад</a>
-        @if (User.Identity?.IsAuthenticated == true)
-        {
-            <a asp-controller="Favorites" asp-action="AddStop" asp-route-stopId="@Model.Id" class="btn btn-outline-primary">
-                Добави в любими
-            </a>
-        }
     </div>
 </div>
 

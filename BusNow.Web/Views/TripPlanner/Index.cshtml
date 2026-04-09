@@ -4,58 +4,79 @@
     ViewData["Title"] = "Планиране на пътуване";
 }
 
-<div class="container mt-4">
-    <h1 class="mb-4">Планиране на пътуване</h1>
-
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form asp-action="Index" method="post">
-                <div class="row g-3">
-                    <div class="col-md-5">
-                        <label asp-for="FromStopId" class="form-label">Начална спирка</label>
-                        <select asp-for="FromStopId" asp-items="Model.Stops" class="form-select">
-                            <option value="">-- избери --</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-5">
-                        <label asp-for="ToStopId" class="form-label">Крайна спирка</label>
-                        <select asp-for="ToStopId" asp-items="Model.Stops" class="form-select">
-                            <option value="">-- избери --</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100">Изчисли</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    @if (Model.HasResult)
-    {
-        @if (!Model.RouteFound)
-        {
-            <div class="alert alert-warning">
-                @Model.Message
-            </div>
-        }
-        else
-        {
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h5 class="mb-0">Резултат</h5>
-                </div>
-                <div class="card-body">
-                    <p><strong>Линия:</strong> @Model.LineNumber</p>
-                    <p><strong>Маршрут:</strong> @Model.RouteName</p>
-                    <p><strong>Направление:</strong> @Model.Direction</p>
-                    <p><strong>Брой спирки:</strong> @Model.StopsCount</p>
-                    <p><strong>Разстояние:</strong> @Model.DistanceKm.ToString("0.00") км</p>
-                    <p><strong>Ориентировъчно време:</strong> @Model.EstimatedMinutes минути</p>
-                </div>
-            </div>
-        }
-    }
+<div class="mb-4">
+    <h1 class="page-title">Планиране на пътуване</h1>
+    <p class="section-subtitle">Избери начална и крайна спирка, за да получиш ориентировъчен маршрут.</p>
 </div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form asp-action="Index" method="post">
+            <div class="row g-3">
+                <div class="col-md-5">
+                    <label asp-for="FromStopId" class="form-label">Начална спирка</label>
+                    <select asp-for="FromStopId" asp-items="Model.Stops" class="form-select">
+                        <option value="">-- избери --</option>
+                    </select>
+                </div>
+
+                <div class="col-md-5">
+                    <label asp-for="ToStopId" class="form-label">Крайна спирка</label>
+                    <select asp-for="ToStopId" asp-items="Model.Stops" class="form-select">
+                        <option value="">-- избери --</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Изчисли</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.HasResult)
+{
+    @if (!Model.RouteFound)
+    {
+        <div class="alert alert-warning">
+            @Model.Message
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-header">Резултат</div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="stats-card h-100">
+                            <div class="text-muted">Линия</div>
+                            <div class="stats-number">@Model.LineNumber</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="stats-card h-100">
+                            <div class="text-muted">Брой спирки</div>
+                            <div class="stats-number">@Model.StopsCount</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="stats-card h-100">
+                            <div class="text-muted">Време</div>
+                            <div class="stats-number">@Model.EstimatedMinutes мин.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <p><strong>Маршрут:</strong> @Model.RouteName</p>
+                <p><strong>Направление:</strong> @Model.Direction</p>
+                <p><strong>Разстояние:</strong> @Model.DistanceKm.ToString("0.00") км</p>
+            </div>
+        </div>
+    }
+}

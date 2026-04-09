@@ -2,14 +2,19 @@
     ViewData["Title"] = "Карта";
 }
 
-<div class="container-fluid mt-3">
-    <h2 class="mb-3">Карта на градския транспорт</h2>
-    <div id="map" style="height: 650px; border-radius: 10px;"></div>
+<div class="mb-4">
+    <h1 class="page-title">Карта на градския транспорт</h1>
+    <p class="section-subtitle">Визуализация на спирки, маршрути и превозни средства в реално време.</p>
+</div>
+
+<div class="card">
+    <div class="card-body p-2">
+        <div id="map" style="height: 700px; border-radius: 16px;"></div>
+    </div>
 </div>
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
-
     <script>
         var map = L.map('map').setView([42.1354, 24.7453], 13);
 
@@ -22,7 +27,6 @@
 
         var vehicleMarkers = {};
 
-        // Спирки
         stops.forEach(function (s) {
             if (s.latitude && s.longitude) {
                 L.marker([s.latitude, s.longitude])
@@ -34,7 +38,6 @@
             }
         });
 
-        // Маршрути
         routes.forEach(function (r) {
             if (!r.points || r.points.length < 2) return;
 
@@ -50,7 +53,6 @@
             .bindPopup("<b>Линия " + r.lineNumber + "</b><br>" + r.name + "<br>" + r.direction);
         });
 
-        // SignalR
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/transportHub")
             .build();
@@ -85,6 +87,21 @@
             console.error(err.toString());
         });
 
+        function createBusIcon(lineNumber) {
+            return L.divIcon({
+                className: 'bus-marker-wrapper',
+                html: `
+                    <div class="bus-marker">
+                        <div class="bus-icon">🚌</div>
+                        <div class="bus-line-number">${lineNumber ?? ""}</div>
+                    </div>
+                `,
+                iconSize: [46, 46],
+                iconAnchor: [23, 23],
+                popupAnchor: [0, -18]
+            });
+        }
+
         function getColorByLine(lineNumber) {
             const colorMap = {
                 "1": "blue",
@@ -95,21 +112,6 @@
             };
 
             return colorMap[lineNumber] || "darkblue";
-        }
-
-        function createBusIcon(lineNumber) {
-            return L.divIcon({
-                className: 'bus-marker-wrapper',
-                html: `
-                    <div class="bus-marker">
-                        <div class="bus-icon">🚌</div>
-                        <div class="bus-line-number">${lineNumber ?? ""}</div>
-                    </div>
-                `,
-                iconSize: [44, 44],
-                iconAnchor: [22, 22],
-                popupAnchor: [0, -18]
-            });
         }
     </script>
 }

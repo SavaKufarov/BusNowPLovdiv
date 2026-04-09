@@ -4,35 +4,36 @@
     ViewData["Title"] = "Известия";
 }
 
-<div class="container mt-4">
-    <h1 class="mb-4">Активни известия</h1>
+<div class="mb-4">
+    <h1 class="page-title">Известия</h1>
+    <p class="section-subtitle">Актуална информация за промени, ремонти и закъснения.</p>
+</div>
 
-    <div id="alertsContainer">
-        @if (!Model.Any())
+<div id="alertsContainer">
+    @if (!Model.Any())
+    {
+        <div class="empty-state" id="noAlertsMessage">
+            <h5 class="mb-2">Няма активни известия</h5>
+            <p class="mb-0">В момента няма активни съобщения за транспорта.</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var alert in Model)
         {
-            <div class="alert alert-success" id="noAlertsMessage">
-                В момента няма активни известия.
+            <div class="card mb-3 border-warning">
+                <div class="card-body">
+                    <h5 class="fw-bold">@alert.Title</h5>
+                    <p>@alert.Description</p>
+                    <p class="mb-0 text-muted">
+                        <strong>Период:</strong>
+                        @alert.StartDate.ToString("dd.MM.yyyy HH:mm") -
+                        @alert.EndDate.ToString("dd.MM.yyyy HH:mm")
+                    </p>
+                </div>
             </div>
         }
-        else
-        {
-            @foreach (var alert in Model)
-            {
-                <div class="card shadow-sm mb-3 border-warning">
-                    <div class="card-body">
-                        <h5 class="card-title">@alert.Title</h5>
-                        <p class="card-text">@alert.Description</p>
-                        <p class="mb-0">
-                            <strong>Период:</strong>
-                            @alert.StartDate.ToString("dd.MM.yyyy HH:mm")
-                            -
-                            @alert.EndDate.ToString("dd.MM.yyyy HH:mm")
-                        </p>
-                    </div>
-                </div>
-            }
-        }
-    </div>
+    }
 </div>
 
 @section Scripts {
@@ -51,13 +52,12 @@
             }
 
             const html = `
-                <div class="card shadow-sm mb-3 border-warning">
+                <div class="card mb-3 border-warning">
                     <div class="card-body">
-                        <h5 class="card-title">${alert.title}</h5>
-                        <p class="card-text">${alert.description}</p>
-                        <p class="mb-0">
-                            <strong>Период:</strong>
-                            ${alert.startDate} - ${alert.endDate}
+                        <h5 class="fw-bold">${alert.title}</h5>
+                        <p>${alert.description}</p>
+                        <p class="mb-0 text-muted">
+                            <strong>Период:</strong> ${alert.startDate} - ${alert.endDate}
                         </p>
                     </div>
                 </div>

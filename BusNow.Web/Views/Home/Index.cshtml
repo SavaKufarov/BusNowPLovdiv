@@ -1,15 +1,57 @@
 ﻿@{
-    ViewData["Title"] = "BusNow Пловдив";
+    ViewData["Title"] = "Начало";
 }
 
-<div class="container mt-4">
-    <div class="p-5 mb-4 bg-light rounded-3 shadow-sm">
-        <div class="container-fluid py-4">
-            <h1 class="display-5 fw-bold">BusNow Пловдив</h1>
-            <p class="col-md-8 fs-5">
-                Уеб приложение за визуализация и следене на градския транспорт в Пловдив.
-            </p>
-            <a asp-controller="Lines" asp-action="Index" class="btn btn-primary btn-lg">Търси линии</a>
+<div class="hero-box mb-4">
+    <h1 class="page-title">BusNow Пловдив</h1>
+    <p class="section-subtitle">
+        Модерно уеб приложение за визуализация, следене и планиране на градския транспорт в Пловдив.
+    </p>
+
+    <div class="d-flex flex-wrap gap-2">
+        <a asp-controller="Map" asp-action="Index" class="btn btn-primary btn-lg">Отвори картата</a>
+        <a asp-controller="TripPlanner" asp-action="Index" class="btn btn-outline-primary btn-lg">Планирай пътуване</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6 col-lg-3">
+        <div class="card quick-card h-100">
+            <div class="card-body">
+                <h5 class="fw-bold">Линии</h5>
+                <p class="text-muted">Преглед на линии, маршрути и разписания.</p>
+                <a asp-controller="Lines" asp-action="Index" class="btn btn-primary">Виж линии</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="card quick-card h-100">
+            <div class="card-body">
+                <h5 class="fw-bold">Спирки</h5>
+                <p class="text-muted">Провери спирки и прогнози за пристигане.</p>
+                <a asp-controller="Stops" asp-action="Index" class="btn btn-primary">Виж спирки</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="card quick-card h-100">
+            <div class="card-body">
+                <h5 class="fw-bold">Карта</h5>
+                <p class="text-muted">Виж автобусите, маршрутите и спирките на карта.</p>
+                <a asp-controller="Map" asp-action="Index" class="btn btn-primary">Отвори карта</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+        <div class="card quick-card h-100">
+            <div class="card-body">
+                <h5 class="fw-bold">Планиране</h5>
+                <p class="text-muted">Изчисли ориентировъчно време между две спирки.</p>
+                <a asp-controller="TripPlanner" asp-action="Index" class="btn btn-primary">Планирай</a>
+            </div>
         </div>
     </div>
 </div>

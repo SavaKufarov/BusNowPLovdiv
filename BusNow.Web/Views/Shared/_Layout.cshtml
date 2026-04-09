@@ -4,72 +4,77 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BusNow Пловдив</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-<body>
+<body class="app-body">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BusNow Пловдив</a>
+        <nav class="navbar navbar-expand-lg navbar-dark app-navbar shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold d-flex align-items-center gap-2" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span class="brand-icon">🚌</span>
+                    <span>BusNow Пловдив</span>
+                </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Превключване на менюто">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="mainNavbar">
-                    <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Map" asp-action="Index">Карта</a>
+                            <a class="nav-link" asp-area="" asp-controller="Lines" asp-action="Index">Линии</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Lines" asp-action="Index">Линии</a>
+                            <a class="nav-link" asp-area="" asp-controller="Stops" asp-action="Index">Спирки</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Stops" asp-action="Index">Спирки</a>
+                            <a class="nav-link" asp-area="" asp-controller="Map" asp-action="Index">Карта</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="TripPlanner" asp-action="Index">Планиране</a>
+                            <a class="nav-link" asp-area="" asp-controller="TripPlanner" asp-action="Index">Планиране</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Alerts" asp-action="Index">Известия</a>
+                            <a class="nav-link" asp-area="" asp-controller="Alerts" asp-action="Index">Известия</a>
                         </li>
 
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Favorites" asp-action="Index">Любими</a>
+                                <a class="nav-link" asp-area="" asp-controller="Favorites" asp-action="Index">Любими</a>
                             </li>
                         }
 
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Админ панел</a>
+                                <a class="nav-link" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Админ панел</a>
                             </li>
                         }
                     </ul>
 
-                    <partial name="_LoginPartial" />
+                    <div class="d-flex align-items-center">
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main class="container py-4">
+        @RenderBody()
+    </main>
 
-    <footer class="border-top footer text-muted mt-4">
-        <div class="container">
-            &copy; @DateTime.Now.Year - BusNow Пловдив
+    <footer class="app-footer mt-5">
+        <div class="container d-flex justify-content-between flex-wrap gap-2">
+            <span>&copy; @DateTime.Now.Year - BusNow Пловдив</span>
+            <span>Уеб приложение за градски транспорт</span>
         </div>
     </footer>
 

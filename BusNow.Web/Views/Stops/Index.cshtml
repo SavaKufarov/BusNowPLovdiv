@@ -4,41 +4,56 @@
     ViewData["Title"] = "Спирки";
 }
 
-<div class="container mt-4">
-    <h1 class="mb-4">Спирки</h1>
+<div class="mb-4">
+    <h1 class="page-title">Спирки</h1>
+    <p class="section-subtitle">Търси спирка по име или код.</p>
+</div>
 
-    <form method="get" class="row g-3 mb-4">
+<div class="search-panel mb-4">
+    <form method="get" class="row g-3">
         <div class="col-md-8">
             <input type="text" name="search" value="@ViewBag.Search" class="form-control"
-                   placeholder="Търси по име или код на спирка" />
+                   placeholder="Например: Тракия, Централна гара, PG001..." />
         </div>
         <div class="col-md-2">
             <button type="submit" class="btn btn-primary w-100">Търси</button>
         </div>
         <div class="col-md-2">
-            <a asp-action="Index" class="btn btn-outline-secondary w-100">Изчисти</a>
+            <a asp-action="Index" class="btn btn-secondary w-100">Изчисти</a>
         </div>
     </form>
+</div>
 
-    @if (!Model.Any())
-    {
-        <div class="alert alert-warning">Няма намерени спирки.</div>
-    }
-    else
-    {
-        <div class="row g-3">
-            @foreach (var stop in Model)
-            {
-                <div class="col-md-6 col-lg-4">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">@stop.Name</h5>
-                            <p class="card-text"><strong>Код:</strong> @stop.Code</p>
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <h5 class="mb-2">Няма намерени спирки</h5>
+        <p class="mb-0">Опитай с друго търсене.</p>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var stop in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card quick-card h-100">
+                    <div class="card-body">
+                        <h5 class="fw-bold">@stop.Name</h5>
+                        <p class="text-muted mb-3">Код: @stop.Code</p>
+
+                        <div class="d-flex gap-2 flex-wrap">
                             <a asp-action="Details" asp-route-id="@stop.Id" class="btn btn-primary">Детайли</a>
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <a asp-controller="Favorites" asp-action="AddStop" asp-route-stopId="@stop.Id" class="btn btn-outline-primary">
+                                    Любима
+                                </a>
+                            }
                         </div>
                     </div>
                 </div>
-            }
-        </div>
-    }
-</div>
+            </div>
+        }
+    </div>
+}
