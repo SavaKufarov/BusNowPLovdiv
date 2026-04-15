@@ -1,51 +1,31 @@
 ﻿@model BusNow.Core.Entities.TransportLine
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Изтриване на линия";
 }
 
-<h1>Изтрий</h1>
+<div class="mb-4">
+    <h1 class="page-title">Изтриване на линия</h1>
+    <p class="section-subtitle">Потвърждение за изтриване.</p>
+</div>
 
-<h3>Сигурни ли сте, че искате да изтриете това?</h3>
-<div>
-    <h4>TransportLine</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LineNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LineNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DirectionA)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DirectionA)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DirectionB)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DirectionB)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Обратно към страницата</a>
-    </form>
+<div class="card border-danger">
+    <div class="card-body">
+        <div class="alert alert-danger">
+            Сигурен ли си, че искаш да изтриеш тази линия?
+        </div>
+
+        <p><strong>Номер на линия:</strong> @Model.LineNumber</p>
+        <p><strong>Тип:</strong> @Model.Type</p>
+        <p><strong>Посока 1:</strong> @Model.DirectionA</p>
+        <p><strong>Посока 2:</strong> @Model.DirectionB</p>
+
+        <form asp-action="Delete" class="mt-4">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Изтрий</button>
+                <a asp-action="Index" class="btn btn-secondary">Назад</a>
+            </div>
+        </form>
+    </div>
 </div>

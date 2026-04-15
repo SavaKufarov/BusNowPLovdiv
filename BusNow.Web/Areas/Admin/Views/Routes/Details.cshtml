@@ -1,48 +1,25 @@
 ﻿@model BusNow.Core.Entities.Route
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детайли за маршрут";
 }
 
-<h1>Детайли</h1>
-
-<div>
-    <h4>Route</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Direction)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Direction)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GeoJson)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GeoJson)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsTemporary)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsTemporary)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TransportLine)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TransportLine.DirectionA)
-        </dd>
-    </dl>
+<div class="mb-4">
+    <h1 class="page-title">Детайли за маршрут</h1>
+    <p class="section-subtitle">Преглед на информацията за избрания маршрут.</p>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Обратно към страницата</a>
+
+<div class="card">
+    <div class="card-body">
+        <p><strong>Линия:</strong> @Model.TransportLine?.LineNumber</p>
+        <p><strong>Име:</strong> @Model.Name</p>
+        <p><strong>Направление:</strong> @Model.Direction</p>
+        <p><strong>Временен:</strong> @(Model.IsTemporary ? "Да" : "Не")</p>
+        <p><strong>GeoJSON:</strong> @(string.IsNullOrWhiteSpace(Model.GeoJson) ? "Няма" : "Попълнен")</p>
+
+        <div class="d-flex gap-2 mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редакция</a>
+            <a asp-action="Index" class="btn btn-secondary">Назад</a>
+        </div>
+    </div>
 </div>

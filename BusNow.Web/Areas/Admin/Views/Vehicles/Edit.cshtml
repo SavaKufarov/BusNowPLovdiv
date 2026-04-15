@@ -1,74 +1,75 @@
 ﻿@model BusNow.Core.Entities.Vehicle
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редакция на превозно средство";
 }
 
-<h1>Edit</h1>
+<div class="mb-4">
+    <h1 class="page-title">Редакция на превозно средство</h1>
+    <p class="section-subtitle">Промяна на настройките на автобус и маршрут.</p>
+</div>
 
-<h4>Vehicle</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="TransportLineId" class="control-label"></label>
-                <select asp-for="TransportLineId" class="form-control" asp-items="ViewBag.TransportLineId"></select>
-                <span asp-validation-for="TransportLineId" class="text-danger"></span>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-7">
+                <form asp-action="Edit">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="CurrentLatitude" />
+                    <input type="hidden" asp-for="CurrentLongitude" />
+                    <input type="hidden" asp-for="CurrentStopOrderIndex" />
+                    <input type="hidden" asp-for="LastUpdateTime" />
+                    <input type="hidden" asp-for="IsForwardDirection" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="TransportLineId" class="form-label">Линия</label>
+                        <select asp-for="TransportLineId" class="form-select" asp-items="ViewBag.TransportLineId"></select>
+                        <span asp-validation-for="TransportLineId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="RouteId" class="form-label">Маршрут</label>
+                        <select asp-for="RouteId" class="form-select" asp-items="ViewBag.RouteId">
+                            <option value="">-- избери маршрут --</option>
+                        </select>
+                        <span asp-validation-for="RouteId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="RegistrationNumber" class="form-label">Регистрационен номер</label>
+                        <input asp-for="RegistrationNumber" class="form-control" />
+                        <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="VehicleType" class="form-label">Тип превозно средство</label>
+                        <input asp-for="VehicleType" class="form-control" />
+                        <span asp-validation-for="VehicleType" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input asp-for="IsActive" class="form-check-input" />
+                        <label asp-for="IsActive" class="form-check-label">Активно</label>
+                    </div>
+
+                    <div class="alert alert-info">
+                        При смяна на маршрута превозното средство ще бъде преместено на първата спирка на новия маршрут.
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Запази</button>
+                        <a asp-action="Index" class="btn btn-secondary">Назад</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="RouteId" class="control-label"></label>
-                <select asp-for="RouteId" class="form-control" asp-items="ViewBag.RouteId"></select>
-                <span asp-validation-for="RouteId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CurrentStopOrderIndex" class="control-label"></label>
-                <input asp-for="CurrentStopOrderIndex" class="form-control" />
-                <span asp-validation-for="CurrentStopOrderIndex" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RegistrationNumber" class="control-label"></label>
-                <input asp-for="RegistrationNumber" class="form-control" />
-                <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VehicleType" class="control-label"></label>
-                <input asp-for="VehicleType" class="form-control" />
-                <span asp-validation-for="VehicleType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CurrentLatitude" class="control-label"></label>
-                <input asp-for="CurrentLatitude" class="form-control" />
-                <span asp-validation-for="CurrentLatitude" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CurrentLongitude" class="control-label"></label>
-                <input asp-for="CurrentLongitude" class="form-control" />
-                <span asp-validation-for="CurrentLongitude" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastUpdateTime" class="control-label"></label>
-                <input asp-for="LastUpdateTime" class="form-control" />
-                <span asp-validation-for="LastUpdateTime" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

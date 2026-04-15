@@ -1,77 +1,148 @@
-﻿@{
+﻿@model BusNow.Web.Areas.Admin.ViewModels.DashboardViewModel
+
+@{
     ViewData["Title"] = "Административен панел";
 }
 
-<div class="container mt-4">
-    <h1 class="mb-4">Административен панел</h1>
+<div class="mb-4">
+    <h1 class="page-title">Административен панел</h1>
+    <p class="section-subtitle">
+        Управление на линии, спирки, маршрути, превозни средства, разписания и известия.
+    </p>
+</div>
 
-    <div class="row g-3">
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5>Линии</h5>
-                    <p>Управление на автобусни линии</p>
-                    <a asp-area="Admin" asp-controller="TransportLines" asp-action="Index" class="btn btn-primary">Отвори</a>
-                </div>
+<div class="row g-4 mb-5">
+    <div class="col-md-6 col-xl-4">
+        <div class="stats-card h-100">
+            <div class="text-muted mb-2">Транспортни линии</div>
+            <div class="stats-number">@Model.LinesCount</div>
+            <div class="text-muted">Общ брой линии в системата</div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="stats-card h-100">
+            <div class="text-muted mb-2">Спирки</div>
+            <div class="stats-number">@Model.StopsCount</div>
+            <div class="text-muted">Общ брой спирки</div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="stats-card h-100">
+            <div class="text-muted mb-2">Маршрути</div>
+            <div class="stats-number">@Model.RoutesCount</div>
+            <div class="text-muted">Създадени маршрути</div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="stats-card h-100">
+            <div class="text-muted mb-2">Активни превозни средства</div>
+            <div class="stats-number">@Model.ActiveVehiclesCount</div>
+            <div class="text-muted">Активни автобуси в момента</div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="stats-card h-100">
+            <div class="text-muted mb-2">Разписания</div>
+            <div class="stats-number">@Model.SchedulesCount</div>
+            <div class="text-muted">Записани часове на тръгване</div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="stats-card h-100">
+            <div class="text-muted mb-2">Активни известия</div>
+            <div class="stats-number">@Model.ActiveAlertsCount</div>
+            <div class="text-muted">Видими за потребителите известия</div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-4">
+    <h2 class="fw-bold mb-2">Бърз достъп</h2>
+    <p class="section-subtitle mb-0">Управление на основните секции в приложението.</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="card quick-card h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="fw-bold">Линии</h5>
+                <p class="text-muted flex-grow-1">Добавяне, редакция и изтриване на транспортни линии.</p>
+                <a asp-area="Admin" asp-controller="TransportLines" asp-action="Index" class="btn btn-primary">Отвори</a>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5>Спирки</h5>
-                    <p>Добавяне и редакция на спирки</p>
-                    <a asp-area="Admin" asp-controller="Stops" asp-action="Index" class="btn btn-primary">Отвори</a>
-                </div>
+    <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="card quick-card h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="fw-bold">Спирки</h5>
+                <p class="text-muted flex-grow-1">Управление на спирки и избор на координати от карта.</p>
+                <a asp-area="Admin" asp-controller="Stops" asp-action="Index" class="btn btn-primary">Отвори</a>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5>Маршрути</h5>
-                    <p>Управление на маршрути</p>
-                    <a asp-area="Admin" asp-controller="Routes" asp-action="Index" class="btn btn-primary">Отвори</a>
-                </div>
+    <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="card quick-card h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="fw-bold">Маршрути</h5>
+                <p class="text-muted flex-grow-1">Създаване и поддръжка на маршрутите на линиите.</p>
+                <a asp-area="Admin" asp-controller="Routes" asp-action="Index" class="btn btn-primary">Отвори</a>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5>Превозни средства</h5>
-                    <p>Управление на автобуси и маршрути</p>
-                    <a asp-area="Admin" asp-controller="Vehicles" asp-action="Index" class="btn btn-primary">Отвори</a>
-                </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="card quick-card h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="fw-bold">Спирки по маршрут</h5>
+                <p class="text-muted flex-grow-1">Подреждане на спирките в конкретен маршрут.</p>
+                <a asp-area="Admin" asp-controller="RouteStops" asp-action="Index" class="btn btn-primary">Отвори</a>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5>Спирки по маршрут</h5>
-                    <p>Свързване на маршрути със спирки</p>
-                    <a asp-area="Admin" asp-controller="RouteStops" asp-action="Index" class="btn btn-primary">Отвори</a>
-                </div>
+    <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="card quick-card h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="fw-bold">Разписания</h5>
+                <p class="text-muted flex-grow-1">Настройка на часове, уикенд и празнични дни.</p>
+                <a asp-area="Admin" asp-controller="Schedules" asp-action="Index" class="btn btn-primary">Отвори</a>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5>Разписания</h5>
-                    <p>Редакция на часове</p>
-                    <a asp-area="Admin" asp-controller="Schedules" asp-action="Index" class="btn btn-primary">Отвори</a>
-                </div>
+    <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="card quick-card h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="fw-bold">Превозни средства</h5>
+                <p class="text-muted flex-grow-1">Управление на автобуси и избор на маршрут.</p>
+                <a asp-area="Admin" asp-controller="Vehicles" asp-action="Index" class="btn btn-primary">Отвори</a>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5>Известия</h5>
-                    <p>Добавяне и управление на съобщения</p>
-                    <a asp-area="Admin" asp-controller="ServiceAlerts" asp-action="Index" class="btn btn-primary">Отвори</a>
-                </div>
+    <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="card quick-card h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="fw-bold">Известия</h5>
+                <p class="text-muted flex-grow-1">Публикуване на активни известия за потребителите.</p>
+                <a asp-area="Admin" asp-controller="ServiceAlerts" asp-action="Index" class="btn btn-primary">Отвори</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="card quick-card h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="fw-bold">Публична карта</h5>
+                <p class="text-muted flex-grow-1">Преглед на това как изглежда картата за потребителя.</p>
+                <a asp-area="" asp-controller="Map" asp-action="Index" class="btn btn-outline-primary">Виж карта</a>
             </div>
         </div>
     </div>

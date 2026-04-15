@@ -4,49 +4,55 @@
     ViewData["Title"] = "Създаване на разписание";
 }
 
-<h1>Създаване на разписание</h1>
+<div class="mb-4">
+    <h1 class="page-title">Създаване на разписание</h1>
+    <p class="section-subtitle">Добавяне на нов час на тръгване.</p>
+</div>
 
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-7">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="mb-3">
-                <label asp-for="TransportLineId" class="form-label">Линия</label>
-                <select asp-for="TransportLineId" class="form-select" asp-items="ViewBag.TransportLineId"></select>
-                <span asp-validation-for="TransportLineId" class="text-danger"></span>
+                    <div class="mb-3">
+                        <label asp-for="TransportLineId" class="form-label">Линия</label>
+                        <select asp-for="TransportLineId" class="form-select" asp-items="ViewBag.TransportLineId"></select>
+                        <span asp-validation-for="TransportLineId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="RouteId" class="form-label">Маршрут</label>
+                        <select asp-for="RouteId" class="form-select" asp-items="ViewBag.RouteId">
+                            <option value="">-- без маршрут --</option>
+                        </select>
+                        <span asp-validation-for="RouteId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DepartureTime" class="form-label">Час на тръгване</label>
+                        <input asp-for="DepartureTime" class="form-control" type="time" />
+                        <span asp-validation-for="DepartureTime" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input asp-for="IsWeekend" class="form-check-input" />
+                        <label asp-for="IsWeekend" class="form-check-label">Уикенд</label>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input asp-for="IsHoliday" class="form-check-input" />
+                        <label asp-for="IsHoliday" class="form-check-label">Празничен ден</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success">Създай</button>
+                        <a asp-action="Index" class="btn btn-secondary">Назад</a>
+                    </div>
+                </form>
             </div>
-
-            <div class="mb-3">
-                <label asp-for="RouteId" class="form-label">Маршрут</label>
-                <select asp-for="RouteId" class="form-select" asp-items="ViewBag.RouteId">
-                    <option value="">-- без маршрут --</option>
-                </select>
-                <span asp-validation-for="RouteId" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="DepartureTime" class="form-label">Час на тръгване</label>
-                <input asp-for="DepartureTime" class="form-control" type="time" />
-                <span asp-validation-for="DepartureTime" class="text-danger"></span>
-            </div>
-
-            <div class="form-check mb-2">
-                <input asp-for="IsWeekend" class="form-check-input" />
-                <label asp-for="IsWeekend" class="form-check-label">Уикенд</label>
-            </div>
-
-            <div class="form-check mb-3">
-                <input asp-for="IsHoliday" class="form-check-input" />
-                <label asp-for="IsHoliday" class="form-check-label">Празничен ден</label>
-            </div>
-
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-success">Създай</button>
-                <a asp-action="Index" class="btn btn-secondary">Назад</a>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 

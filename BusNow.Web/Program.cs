@@ -8,6 +8,7 @@ using System.Globalization;
 using BusNow.Web.Hubs;
 using BusNow.Web.Services;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -82,3 +83,5 @@ CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 app.MapHub<TransportHub>("/transportHub");
 
 app.Run();
+
+public partial class Program { }

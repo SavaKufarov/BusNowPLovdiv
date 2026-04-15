@@ -1,51 +1,30 @@
 ﻿@model BusNow.Core.Entities.Schedule
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Изтриване на разписание";
 }
 
-<h1>Изтрий</h1>
+<div class="mb-4">
+    <h1 class="page-title">Изтриване на разписание</h1>
+    <p class="section-subtitle">Потвърждение за изтриване.</p>
+</div>
 
-<h3>Сигурни ли сте, че искате да изтриете това?</h3>
-<div>
-    <h4>Schedule</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DepartureTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DepartureTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsWeekend)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsWeekend)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsHoliday)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsHoliday)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TransportLine)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TransportLine.DirectionA)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Route)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Route.Direction)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Обратно към страницата</a>
-    </form>
+<div class="card border-danger">
+    <div class="card-body">
+        <div class="alert alert-danger">
+            Сигурен ли си, че искаш да изтриеш това разписание?
+        </div>
+
+        <p><strong>Линия:</strong> @Model.TransportLine?.LineNumber</p>
+        <p><strong>Маршрут:</strong> @Model.Route?.Name</p>
+        <p><strong>Час:</strong> @Model.DepartureTime.ToString(@"hh\:mm")</p>
+
+        <form asp-action="Delete" class="mt-4">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Изтрий</button>
+                <a asp-action="Index" class="btn btn-secondary">Назад</a>
+            </div>
+        </form>
+    </div>
 </div>

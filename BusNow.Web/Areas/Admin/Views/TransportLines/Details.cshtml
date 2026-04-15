@@ -1,48 +1,25 @@
 ﻿@model BusNow.Core.Entities.TransportLine
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детайли за линия";
 }
 
-<h1>Детайли</h1>
-
-<div>
-    <h4>TransportLine</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LineNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LineNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DirectionA)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DirectionA)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DirectionB)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DirectionB)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-    </dl>
+<div class="mb-4">
+    <h1 class="page-title">Детайли за линия</h1>
+    <p class="section-subtitle">Преглед на информацията за избраната транспортна линия.</p>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Редакция</a> |
-    <a asp-action="Index">Обратно към страницата</a>
+
+<div class="card">
+    <div class="card-body">
+        <p><strong>Номер на линия:</strong> @Model.LineNumber</p>
+        <p><strong>Тип:</strong> @Model.Type</p>
+        <p><strong>Посока 1:</strong> @Model.DirectionA</p>
+        <p><strong>Посока 2:</strong> @Model.DirectionB</p>
+        <p><strong>Активна:</strong> @(Model.IsActive ? "Да" : "Не")</p>
+
+        <div class="d-flex gap-2 mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редакция</a>
+            <a asp-action="Index" class="btn btn-secondary">Назад</a>
+        </div>
+    </div>
 </div>

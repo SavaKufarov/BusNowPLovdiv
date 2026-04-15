@@ -4,49 +4,55 @@
     ViewData["Title"] = "Редакция на маршрут";
 }
 
-<h1>Редакция на маршрут</h1>
+<div class="mb-4">
+    <h1 class="page-title">Редакция на маршрут</h1>
+    <p class="section-subtitle">Промяна на съществуващ маршрут.</p>
+</div>
 
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Edit">
-            <input type="hidden" asp-for="Id" />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-7">
+                <form asp-action="Edit">
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="mb-3">
-                <label asp-for="TransportLineId" class="form-label">Линия</label>
-                <select asp-for="TransportLineId" class="form-select" asp-items="ViewBag.TransportLineId"></select>
-                <span asp-validation-for="TransportLineId" class="text-danger"></span>
+                    <div class="mb-3">
+                        <label asp-for="TransportLineId" class="form-label">Линия</label>
+                        <select asp-for="TransportLineId" class="form-select" asp-items="ViewBag.TransportLineId"></select>
+                        <span asp-validation-for="TransportLineId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label">Име на маршрут</label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Direction" class="form-label">Направление</label>
+                        <input asp-for="Direction" class="form-control" />
+                        <span asp-validation-for="Direction" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="GeoJson" class="form-label">GeoJSON</label>
+                        <textarea asp-for="GeoJson" class="form-control"></textarea>
+                        <span asp-validation-for="GeoJson" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input asp-for="IsTemporary" class="form-check-input" />
+                        <label asp-for="IsTemporary" class="form-check-label">Временен маршрут</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Запази</button>
+                        <a asp-action="Index" class="btn btn-secondary">Назад</a>
+                    </div>
+                </form>
             </div>
-
-            <div class="mb-3">
-                <label asp-for="Name" class="form-label">Име</label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Direction" class="form-label">Направление</label>
-                <input asp-for="Direction" class="form-control" />
-                <span asp-validation-for="Direction" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="GeoJson" class="form-label">GeoJson</label>
-                <textarea asp-for="GeoJson" class="form-control"></textarea>
-                <span asp-validation-for="GeoJson" class="text-danger"></span>
-            </div>
-
-            <div class="form-check mb-3">
-                <input asp-for="IsTemporary" class="form-check-input" />
-                <label asp-for="IsTemporary" class="form-check-label">Временен маршрут</label>
-            </div>
-
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Запази</button>
-                <a asp-action="Index" class="btn btn-secondary">Назад</a>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 

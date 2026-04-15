@@ -1,63 +1,31 @@
 ﻿@model BusNow.Core.Entities.ServiceAlert
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Изтриване на известие";
 }
 
-<h1>Изтрий</h1>
+<div class="mb-4">
+    <h1 class="page-title">Изтриване на известие</h1>
+    <p class="section-subtitle">Потвърждение за изтриване.</p>
+</div>
 
-<h3>Сигурни ли те, че искате да изтриете това?</h3>
-<div>
-    <h4>ServiceAlert</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AffectedLine)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AffectedLine.DirectionA)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AffectedRoute)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AffectedRoute.Direction)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Обратно към страницата</a>
-    </form>
+<div class="card border-danger">
+    <div class="card-body">
+        <div class="alert alert-danger">
+            Сигурен ли си, че искаш да изтриеш това известие?
+        </div>
+
+        <p><strong>Заглавие:</strong> @Model.Title</p>
+        <p><strong>Начало:</strong> @Model.StartDate.ToString("dd.MM.yyyy HH:mm")</p>
+        <p><strong>Край:</strong> @Model.EndDate.ToString("dd.MM.yyyy HH:mm")</p>
+        <p><strong>Активно:</strong> @(Model.IsActive ? "Да" : "Не")</p>
+
+        <form asp-action="Delete" class="mt-4">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Изтрий</button>
+                <a asp-action="Index" class="btn btn-secondary">Назад</a>
+            </div>
+        </form>
+    </div>
 </div>

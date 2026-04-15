@@ -1,45 +1,30 @@
 ﻿@model BusNow.Core.Entities.RouteStop
 
 @{
-    ViewData["Title"] = "Изтрий";
+    ViewData["Title"] = "Изтриване на спирка по маршрут";
 }
 
-<h1>Изтрий</h1>
+<div class="mb-4">
+    <h1 class="page-title">Изтриване на спирка по маршрут</h1>
+    <p class="section-subtitle">Потвърждение за изтриване.</p>
+</div>
 
-<h3>Сигурни ли сте, че искате да изтриете това?</h3>
-<div>
-    <h4>RouteStop</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OrderIndex)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OrderIndex)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DistanceFromStartKm)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DistanceFromStartKm)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Route)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Route.Direction)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Stop)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Stop.Code)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Назад</a>
-    </form>
+<div class="card border-danger">
+    <div class="card-body">
+        <div class="alert alert-danger">
+            Сигурен ли си, че искаш да премахнеш тази спирка от маршрута?
+        </div>
+
+        <p><strong>Маршрут:</strong> @Model.Route?.Name</p>
+        <p><strong>Спирка:</strong> @Model.Stop?.Name</p>
+        <p><strong>Поредност:</strong> @Model.OrderIndex</p>
+
+        <form asp-action="Delete" class="mt-4">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Изтрий</button>
+                <a asp-action="Index" class="btn btn-secondary">Назад</a>
+            </div>
+        </form>
+    </div>
 </div>

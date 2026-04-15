@@ -1,64 +1,77 @@
 ﻿@model BusNow.Core.Entities.ServiceAlert
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редакция на известие";
 }
 
-<h1>Редакция</h1>
+<div class="mb-4">
+    <h1 class="page-title">Редакция на известие</h1>
+    <p class="section-subtitle">Промяна на съществуващо съобщение.</p>
+</div>
 
-<h4>ServiceAlert</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-7">
+                <form asp-action="Edit">
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label">Заглавие</label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">Описание</label>
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="AffectedLineId" class="form-label">Засегната линия</label>
+                        <select asp-for="AffectedLineId" class="form-select" asp-items="ViewBag.AffectedLineId">
+                            <option value="">-- няма --</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="AffectedRouteId" class="form-label">Засегнат маршрут</label>
+                        <select asp-for="AffectedRouteId" class="form-select" asp-items="ViewBag.AffectedRouteId">
+                            <option value="">-- няма --</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="StartDate" class="form-label">Начало</label>
+                        <input asp-for="StartDate" type="datetime-local" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="EndDate" class="form-label">Край</label>
+                        <input asp-for="EndDate" type="datetime-local" class="form-control" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input asp-for="IsActive" class="form-check-input" />
+                        <label asp-for="IsActive" class="form-check-label">Активно</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Запази</button>
+                        <a asp-action="Index" class="btn btn-secondary">Назад</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AffectedLineId" class="control-label"></label>
-                <select asp-for="AffectedLineId" class="form-control" asp-items="ViewBag.AffectedLineId"></select>
-                <span asp-validation-for="AffectedLineId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AffectedRouteId" class="control-label"></label>
-                <select asp-for="AffectedRouteId" class="form-control" asp-items="ViewBag.AffectedRouteId"></select>
-                <span asp-validation-for="AffectedRouteId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Обратно към страницата</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

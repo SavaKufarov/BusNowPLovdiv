@@ -1,48 +1,25 @@
 ﻿@model BusNow.Core.Entities.Schedule
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детайли за разписание";
 }
 
-<h1>Детайли</h1>
-
-<div>
-    <h4>Schedule</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DepartureTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DepartureTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsWeekend)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsWeekend)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsHoliday)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsHoliday)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TransportLine)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TransportLine.DirectionA)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Route)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Route.Direction)
-        </dd>
-    </dl>
+<div class="mb-4">
+    <h1 class="page-title">Детайли за разписание</h1>
+    <p class="section-subtitle">Преглед на информацията за избрания запис.</p>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Обратно към страницата</a>
+
+<div class="card">
+    <div class="card-body">
+        <p><strong>Линия:</strong> @Model.TransportLine?.LineNumber</p>
+        <p><strong>Маршрут:</strong> @Model.Route?.Name</p>
+        <p><strong>Час на тръгване:</strong> @Model.DepartureTime.ToString(@"hh\:mm")</p>
+        <p><strong>Уикенд:</strong> @(Model.IsWeekend ? "Да" : "Не")</p>
+        <p><strong>Празничен ден:</strong> @(Model.IsHoliday ? "Да" : "Не")</p>
+
+        <div class="d-flex gap-2 mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редакция</a>
+            <a asp-action="Index" class="btn btn-secondary">Назад</a>
+        </div>
+    </div>
 </div>

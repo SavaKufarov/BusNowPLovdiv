@@ -1,45 +1,29 @@
 ﻿@model BusNow.Core.Entities.Stop
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Изтриване на спирка";
 }
 
-<h1>Изтрий</h1>
+<div class="mb-4">
+    <h1 class="page-title">Изтриване на спирка</h1>
+    <p class="section-subtitle">Потвърждение за изтриване.</p>
+</div>
 
-<h3>Сигурни ли сте,че искате да изтриете това?</h3>
-<div>
-    <h4>Stop</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Code)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Code)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Latitude)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Latitude)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Longitude)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Longitude)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Обратно към страницата</a>
-    </form>
+<div class="card border-danger">
+    <div class="card-body">
+        <div class="alert alert-danger">
+            Сигурен ли си, че искаш да изтриеш тази спирка?
+        </div>
+
+        <p><strong>Име:</strong> @Model.Name</p>
+        <p><strong>Код:</strong> @Model.Code</p>
+
+        <form asp-action="Delete" class="mt-4">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Изтрий</button>
+                <a asp-action="Index" class="btn btn-secondary">Назад</a>
+            </div>
+        </form>
+    </div>
 </div>

@@ -1,42 +1,24 @@
 ﻿@model BusNow.Core.Entities.Stop
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детайли за спирка";
 }
 
-<h1>Детайли</h1>
-
-<div>
-    <h4>Stop</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Code)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Code)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Latitude)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Latitude)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Longitude)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Longitude)
-        </dd>
-    </dl>
+<div class="mb-4">
+    <h1 class="page-title">Детайли за спирка</h1>
+    <p class="section-subtitle">Преглед на информацията за избраната спирка.</p>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Обратно към страницата</a>
+
+<div class="card">
+    <div class="card-body">
+        <p><strong>Име:</strong> @Model.Name</p>
+        <p><strong>Код:</strong> @Model.Code</p>
+        <p><strong>Географска ширина:</strong> @Model.Latitude</p>
+        <p><strong>Географска дължина:</strong> @Model.Longitude</p>
+
+        <div class="d-flex gap-2 mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редакция</a>
+            <a asp-action="Index" class="btn btn-secondary">Назад</a>
+        </div>
+    </div>
 </div>

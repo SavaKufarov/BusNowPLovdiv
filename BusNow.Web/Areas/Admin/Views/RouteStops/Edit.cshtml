@@ -1,49 +1,58 @@
 ﻿@model BusNow.Core.Entities.RouteStop
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редакция на спирка по маршрут";
 }
 
-<h1>Спирки по маршрут</h1>
+<div class="mb-4">
+    <h1 class="page-title">Редакция на спирка по маршрут</h1>
+    <p class="section-subtitle">Промяна на подредбата и разстоянието по маршрута.</p>
+</div>
 
-<h4>RouteStop</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="RouteId" class="control-label"></label>
-                <select asp-for="RouteId" class="form-control" asp-items="ViewBag.RouteId"></select>
-                <span asp-validation-for="RouteId" class="text-danger"></span>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-7">
+                <form asp-action="Edit">
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="RouteId" class="form-label">Маршрут</label>
+                        <select asp-for="RouteId" class="form-select" asp-items="ViewBag.RouteId"></select>
+                        <span asp-validation-for="RouteId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="StopId" class="form-label">Спирка</label>
+                        <select asp-for="StopId" class="form-select" asp-items="ViewBag.StopId"></select>
+                        <span asp-validation-for="StopId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="OrderIndex" class="form-label">Поредност</label>
+                        <input asp-for="OrderIndex" class="form-control" />
+                        <span asp-validation-for="OrderIndex" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DistanceFromStartKm" class="form-label">Разстояние от началото (км)</label>
+                        <input asp-for="DistanceFromStartKm" class="form-control" />
+                        <span asp-validation-for="DistanceFromStartKm" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Запази</button>
+                        <a asp-action="Index" class="btn btn-secondary">Назад</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="StopId" class="control-label"></label>
-                <select asp-for="StopId" class="form-control" asp-items="ViewBag.StopId"></select>
-                <span asp-validation-for="StopId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrderIndex" class="control-label"></label>
-                <input asp-for="OrderIndex" class="form-control" />
-                <span asp-validation-for="OrderIndex" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DistanceFromStartKm" class="control-label"></label>
-                <input asp-for="DistanceFromStartKm" class="form-control" />
-                <span asp-validation-for="DistanceFromStartKm" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Обратно към страницата</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
