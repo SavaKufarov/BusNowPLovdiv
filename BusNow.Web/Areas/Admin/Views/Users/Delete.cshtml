@@ -1,0 +1,30 @@
+﻿@model BusNow.Web.Areas.Admin.ViewModels.EditUserViewModel
+
+@{
+    ViewData["Title"] = "Деактивиране на потребител";
+}
+
+<div class="mb-4">
+    <h1 class="page-title">Деактивиране на потребител</h1>
+    <p class="section-subtitle">Потвърждение за деактивиране на акаунта.</p>
+</div>
+
+<div class="card border-danger">
+    <div class="card-body">
+        <div class="alert alert-danger">
+            Сигурен ли си, че искаш да деактивираш този потребител?
+        </div>
+
+        <p><strong>Име:</strong> @(string.IsNullOrWhiteSpace(Model.FullName) ? "-" : Model.FullName)</p>
+        <p><strong>Имейл:</strong> @Model.Email</p>
+        <p><strong>Потребителско име:</strong> @Model.UserName</p>
+
+        <form asp-action="Delete" class="mt-4">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">Деактивирай</button>
+                <a asp-action="Index" class="btn btn-secondary">Назад</a>
+            </div>
+        </form>
+    </div>
+</div>

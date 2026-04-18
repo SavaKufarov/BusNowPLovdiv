@@ -1,11 +1,31 @@
 ﻿@{
     ViewData["Title"] = "Карта";
+    var focusTitle = ViewBag.FocusTitle as string;
+    var isFiltered = ViewBag.IsFiltered != null && (bool)ViewBag.IsFiltered;
 }
 
 <div class="mb-4">
     <h1 class="page-title">Карта на градския транспорт</h1>
     <p class="section-subtitle">Визуализация на спирки, маршрути и превозни средства в реално време.</p>
 </div>
+
+@if (isFiltered)
+{
+    <div class="card mb-4 border-0">
+        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+                <h5 class="fw-bold mb-1">@focusTitle</h5>
+                <p class="text-muted mb-0">Показва се филтриран изглед на картата.</p>
+            </div>
+
+            <a asp-controller="Map"
+               asp-action="Index"
+               class="btn btn-outline-primary">
+                Обратно към всички
+            </a>
+        </div>
+    </div>
+}
 
 <div class="card">
     <div class="card-body p-2">
@@ -24,17 +44,22 @@
 
         var stops = @Html.Raw(ViewBag.StopsJson);
         var routes = @Html.Raw(ViewBag.RoutesJson);
+        var focus = @Html.Raw(ViewBag.FocusJson ?? "null");
 
         var vehicleMarkers = {};
+        var stopMarkers = [];
+        var routeLayers = [];
 
         stops.forEach(function (s) {
             if (s.latitude && s.longitude) {
-                L.marker([s.latitude, s.longitude])
+                var marker = L.marker([s.latitude, s.longitude])
                     .addTo(map)
                     .bindPopup(
                         "<b>" + s.name + "</b><br>Код: " + s.code +
                         "<br><a href='/Stops/Details/" + s.id + "'>Виж детайли</a>"
                     );
+
+                stopMarkers.push({ id: s.id, marker: marker });
             }
         });
 
@@ -45,13 +70,34 @@
                 return [p.latitude, p.longitude];
             });
 
-            L.polyline(coords, {
+            var polyline = L.polyline(coords, {
                 color: getColorByLine(r.lineNumber),
                 weight: 5
             })
             .addTo(map)
             .bindPopup("<b>Линия " + r.lineNumber + "</b><br>" + r.name + "<br>" + r.direction);
+
+            routeLayers.push(polyline);
         });
+
+        if (focus) {
+            if (focus.type === "stop") {
+                map.setView([focus.latitude, focus.longitude], 16);
+
+                var selectedStop = stopMarkers.find(x => x.id === focus.id);
+                if (selectedStop) {
+                    selectedStop.marker.openPopup();
+                }
+            }
+            else if (focus.type === "line") {
+                if (routeLayers.length > 0) {
+                    var group = L.featureGroup(routeLayers);
+                    map.fitBounds(group.getBounds(), { padding: [30, 30] });
+                } else {
+                    map.setView([focus.latitude, focus.longitude], 14);
+                }
+            }
+        }
 
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/transportHub")

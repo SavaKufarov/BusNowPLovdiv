@@ -2,6 +2,17 @@
 
 @{
     ViewData["Title"] = "Спирки по маршрут";
+
+    var groupedData = Model
+        .GroupBy(x => new
+        {
+            LineNumber = x.Route?.TransportLine?.LineNumber ?? "Без линия",
+            RouteName = x.Route?.Name ?? "Без маршрут",
+            Direction = x.Route?.Direction ?? ""
+        })
+        .OrderBy(g => g.Key.LineNumber)
+        .ThenBy(g => g.Key.RouteName)
+        .ToList();
 }
 
 <div class="mb-4">
@@ -13,38 +24,67 @@
     <a asp-action="Create" class="btn btn-success">Добави спирка към маршрут</a>
 </div>
 
-<div class="card">
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table align-middle">
-                <thead>
-                    <tr>
-                        <th>Линия</th>
-                        <th>Маршрут</th>
-                        <th>Спирка</th>
-                        <th>Поредност</th>
-                        <th>Разстояние (км)</th>
-                        <th>Действия</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.Route?.TransportLine?.LineNumber</td>
-                            <td>@item.Route?.Name</td>
-                            <td><strong>@item.Stop?.Name</strong></td>
-                            <td>@item.OrderIndex</td>
-                            <td>@item.DistanceFromStartKm</td>
-                            <td class="d-flex gap-2 flex-wrap">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Редакция</a>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Детайли</a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Изтрий</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+@if (!groupedData.Any())
+{
+    <div class="empty-state">
+        <h5 class="mb-2">Няма добавени спирки по маршрути</h5>
+        <p class="mb-0">Създай първия запис от бутона по-горе.</p>
     </div>
-</div>
+}
+else
+{
+    @foreach (var group in groupedData)
+    {
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+                    <div>
+                        <h5 class="mb-1 fw-bold">Линия @group.Key.LineNumber - @group.Key.RouteName</h5>
+                        <small class="text-muted">@group.Key.Direction</small>
+                    </div>
+                    <span class="badge-soft">@group.Count() спирки</span>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Поредност</th>
+                                <th>Спирка</th>
+                                <th>Код</th>
+                                <th>Разстояние от началото</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in group.OrderBy(x => x.OrderIndex))
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="badge-soft">@item.OrderIndex</span>
+                                    </td>
+                                    <td>
+                                        <strong>@item.Stop?.Name</strong>
+                                    </td>
+                                    <td>
+                                        @item.Stop?.Code
+                                    </td>
+                                    <td>
+                                        @item.DistanceFromStartKm км
+                                    </td>
+                                    <td class="d-flex gap-2 flex-wrap">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Редакция</a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Детайли</a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Изтрий</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+}

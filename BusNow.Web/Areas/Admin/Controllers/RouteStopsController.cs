@@ -22,11 +22,18 @@ namespace BusNow.Web.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/RouteStops
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.RouteStops.Include(r => r.Route).Include(r => r.Stop);
-            return View(await appDbContext.ToListAsync());
+            var routeStops = await _context.RouteStops
+                .Include(rs => rs.Route)
+                    .ThenInclude(r => r!.TransportLine)
+                .Include(rs => rs.Stop)
+                .OrderBy(rs => rs.Route!.TransportLine!.LineNumber)
+                .ThenBy(rs => rs.Route!.Name)
+                .ThenBy(rs => rs.OrderIndex)
+                .ToListAsync();
+
+            return View(routeStops);
         }
 
         // GET: Admin/RouteStops/Details/5

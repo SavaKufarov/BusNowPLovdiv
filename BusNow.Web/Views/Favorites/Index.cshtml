@@ -24,10 +24,29 @@
                             <div class="col-12">
                                 <div class="stats-card d-flex justify-content-between align-items-center">
                                     <div>
-                                        <div class="fw-bold">@item.Stop?.Name</div>
+                                        <a asp-controller="Map"
+                                           asp-action="Index"
+                                           asp-route-stopId="@item.StopId"
+                                           class="fw-bold text-decoration-none">
+                                            @item.Stop?.Name
+                                        </a>
+                                        <br />
                                         <small class="text-muted">Код: @item.Stop?.Code</small>
                                     </div>
-                                    <a asp-action="RemoveStop" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Премахни</a>
+
+                                    <div class="d-flex gap-2">
+                                        <a asp-controller="Map"
+                                           asp-action="Index"
+                                           asp-route-stopId="@item.StopId"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Покажи на карта
+                                        </a>
+                                        <a asp-action="RemoveStop"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-danger">
+                                            Премахни
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         }
@@ -55,10 +74,29 @@
                             <div class="col-12">
                                 <div class="stats-card d-flex justify-content-between align-items-center">
                                     <div>
-                                        <div class="fw-bold">Линия @item.Line?.LineNumber</div>
+                                        <a asp-controller="Map"
+                                           asp-action="Index"
+                                           asp-route-lineId="@item.LineId"
+                                           class="fw-bold text-decoration-none">
+                                            Линия @item.Line?.LineNumber
+                                        </a>
+                                        <br />
                                         <small class="text-muted">@item.Line?.Type</small>
                                     </div>
-                                    <a asp-action="RemoveLine" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Премахни</a>
+
+                                    <div class="d-flex gap-2">
+                                        <a asp-controller="Map"
+                                           asp-action="Index"
+                                           asp-route-lineId="@item.LineId"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Покажи на карта
+                                        </a>
+                                        <a asp-action="RemoveLine"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-danger">
+                                            Премахни
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         }
