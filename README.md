@@ -47,7 +47,7 @@ BusNowPLovdiv/
 - **Архитектура:** Clean Architecture
 - **Изгледи:** Razor Pages / MVC (HTML, CSS, JavaScript)
 - **ORM:** Entity Framework Core
-- **Тестове:** xUnit / NUnit
+- **Тестове:** xUnit
 - **Лиценз:** GNU AGPL v3
 
 ---
@@ -58,7 +58,7 @@ BusNowPLovdiv/
 
 - [.NET SDK 8.0+](https://dotnet.microsoft.com/download)
 - SQL Server / SQLite (или друга конфигурирана база данни)
-- IDE: [Visual Studio 2022](https://visualstudio.microsoft.com/) или [Rider](https://www.jetbrains.com/rider/)
+- IDE: [Visual Studio 2022](https://visualstudio.microsoft.com/)
 
 ---
 
