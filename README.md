@@ -57,7 +57,7 @@ BusNowPLovdiv/
 За да стартирате проекта локално, са необходими:
 
 - [.NET SDK 8.0+](https://dotnet.microsoft.com/download)
-- SQL Server / SQLite (или друга конфигурирана база данни)
+- SQL Server
 - IDE: [Visual Studio 2022](https://visualstudio.microsoft.com/)
 
 ---
