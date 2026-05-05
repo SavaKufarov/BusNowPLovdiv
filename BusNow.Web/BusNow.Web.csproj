@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-BusNow.Web-88c152b1-205a-4569-a412-44c721763d79</UserSecretsId>
+	<SatelliteResourceLanguages>en;bg</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <ItemGroup>
